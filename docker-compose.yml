@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: roberah_frontend
+    #image: registry.zaris-dev.ir/roberah/front:v0.0.1
+    ports:
+      - "3002:80"
+    restart: unless-stopped
