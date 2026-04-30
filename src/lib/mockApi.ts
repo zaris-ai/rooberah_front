@@ -134,4 +134,3 @@ export const parkingApi = {
     return { message: data.message };
   },
 };
-

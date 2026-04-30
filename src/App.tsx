@@ -5,6 +5,7 @@ import SpotDetailsPage from './pages/SpotDetailsPage';
 import MyParkingPage from './pages/MyParkingPage';
 
 export default function App() {
+  console.log(import.meta.env.VITE_API_BASE_URL);
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/units" replace />} />
