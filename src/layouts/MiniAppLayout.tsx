@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Bell, Home, UserRound } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
+import { Bell, Home, SquareParking, Utensils, UserRound } from 'lucide-react';
 
 type MiniAppLayoutProps = {
   title: string;
@@ -47,8 +47,8 @@ export default function MiniAppLayout({
 
         <main className="px-5 pb-28 pt-3">{children}</main>
 
-        <nav className="fixed bottom-0 left-1/2 z-40 w-full max-w-[430px] -translate-x-1/2 border-t border-[#ededed] bg-white/90 px-6 py-3 backdrop-blur-xl">
-          <div className="grid grid-cols-3 gap-2">
+        <nav className="fixed bottom-0 left-1/2 z-40 w-full max-w-[430px] -translate-x-1/2 border-t border-[#ededed] bg-white/90 px-4 py-3 backdrop-blur-xl">
+          <div className="grid grid-cols-4 gap-2">
             <NavItem
               to="/units"
               icon={<Home className="h-5 w-5" />}
@@ -56,6 +56,19 @@ export default function MiniAppLayout({
               exact
             />
 
+            <NavItem
+              to="/units"
+              icon={<SquareParking className="h-5 w-5" />}
+              label="پارکینگ"
+              matchPrefix
+            />
+
+            <NavItem
+              to="/food"
+              icon={<Utensils className="h-5 w-5" />}
+              label="رزرو غذا"
+              exact
+            />
 
             <NavItem
               to="/my-parking"
@@ -63,13 +76,6 @@ export default function MiniAppLayout({
               label="من"
               exact
             />
-
-            <Link
-              to="/units"
-              className="flex items-center justify-center rounded-[18px] bg-[#4777ff] px-3 py-3 text-sm font-black text-white shadow-[0_10px_24px_rgba(71,119,255,0.35)]"
-            >
-              رزرو
-            </Link>
           </div>
         </nav>
       </div>
@@ -99,7 +105,7 @@ function NavItem({
 
         const active =
           matchPrefix && to === '/units'
-            ? path.startsWith('/units') && path !== '/units'
+            ? path.startsWith('/units')
             : isActive;
 
         return [
