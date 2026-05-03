@@ -50,9 +50,7 @@ function normalizeDay(day: string) {
   return day.replace('‌', ' ').trim();
 }
 
-function getFoodBySlot(day: FoodMenuDay, slot: FoodSlot) {
-  return slot === 'f1' ? day.food1 : day.food2;
-}
+
 
 function getReservationKey(dayOfWeek: string) {
   return normalizeDay(dayOfWeek);
@@ -152,7 +150,7 @@ export default function FoodReservationPage() {
       setError('');
       setMessage('');
 
-      const result = await foodApi.cancel(dayOfWeek);
+      const result = await foodApi.cancel({ dayOfWeek });
 
       setMessage(result.message);
       await loadData();
@@ -389,6 +387,7 @@ function FoodOption({
   title,
   reservation,
   actionLoadingKey,
+    canModify,
   onReserve,
 }: {
   day: FoodMenuDay;
@@ -396,6 +395,7 @@ function FoodOption({
   title: string;
   reservation?: FoodReservation;
   actionLoadingKey: string;
+  canModify: boolean;
   onReserve: (day: FoodMenuDay, foodSlot: FoodSlot, portionType: PortionType) => void;
 }) {
   const selected = reservation?.food === title;
@@ -434,7 +434,7 @@ function FoodOption({
               key={portion.type}
               type="button"
               onClick={() => onReserve(day, slot, portion.type)}
-              disabled={!!actionLoadingKey}
+            disabled={!canModify || !!actionLoadingKey}
               className={[
                 'min-h-[74px] rounded-[18px] px-2 py-3 text-center transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50',
                 isSelectedPortion
