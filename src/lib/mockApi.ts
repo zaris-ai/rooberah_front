@@ -8,13 +8,15 @@ type ApiEnvelope<T> = T & {
   message?: string;
 };
 
-type FoodPortionType = 'full' | 'half' | 'khorak';
+export type FoodSlot = 'f1' | 'f2' | 'f3';
+export type FoodPortionType = 'full' | 'half' | 'khorak';
 
 export type FoodMenuDay = {
   id?: number;
   dayOfWeek: string;
   food1: string;
   food2: string;
+  food3?: string | null;
   weekStartDate?: string;
   canModify?: boolean;
   modifyDeadline?: string | null;
@@ -24,7 +26,7 @@ export type FoodReservation = {
   telegramUserId: string;
   dayOfWeek: string;
   food: string;
-  foodSlot: 'f1' | 'f2';
+  foodSlot: FoodSlot;
   portionType: FoodPortionType;
   portionLabel: string;
   portionQty: number;
@@ -140,25 +142,26 @@ async function apiPost<T>(
 function normalizeFoodMenuDay(item: any): FoodMenuDay {
   return {
     id: item.id,
-    dayOfWeek: item.dayOfWeek ?? item.day_of_week,
-    food1: item.food1 ?? item.food_1 ?? item.food1_text ?? item.food1,
-    food2: item.food2 ?? item.food_2 ?? item.food2_text ?? item.food2,
+    dayOfWeek: item.dayOfWeek ?? item.day_of_week ?? '',
+    food1: item.food1 ?? item.food_1 ?? item.food1_text ?? '',
+    food2: item.food2 ?? item.food_2 ?? item.food2_text ?? '',
+    food3: item.food3 ?? item.food_3 ?? item.food3_text ?? null,
     weekStartDate: item.weekStartDate ?? item.week_start_date,
-    canModify: item.canModify,
-    modifyDeadline: item.modifyDeadline,
+    canModify: item.canModify ?? item.can_modify,
+    modifyDeadline: item.modifyDeadline ?? item.modify_deadline ?? null,
   };
 }
 
 function normalizeFoodReservation(item: any): FoodReservation {
   return {
-    telegramUserId: item.telegramUserId ?? item.telegram_user_id,
-    dayOfWeek: item.dayOfWeek ?? item.day_of_week,
-    food: item.food,
+    telegramUserId: String(item.telegramUserId ?? item.telegram_user_id ?? ''),
+    dayOfWeek: item.dayOfWeek ?? item.day_of_week ?? '',
+    food: item.food ?? '',
     foodSlot: item.foodSlot ?? item.food_slot,
     portionType: item.portionType ?? item.portion_type,
-    portionLabel: item.portionLabel ?? item.portion_label,
-    portionQty: item.portionQty ?? item.portion_qty,
-    reservedAt: item.reservedAt ?? item.reserved_at,
+    portionLabel: item.portionLabel ?? item.portion_label ?? 'پرس کامل',
+    portionQty: Number(item.portionQty ?? item.portion_qty ?? 1),
+    reservedAt: item.reservedAt ?? item.reserved_at ?? '',
     weekStartDate: item.weekStartDate ?? item.week_start_date,
   };
 }
@@ -245,7 +248,7 @@ export const foodApi = {
 
   async reserve(params: {
     dayOfWeek: string;
-    foodSlot: 'f1' | 'f2';
+    foodSlot: FoodSlot;
     portionType: FoodPortionType;
     weekStartDate?: string;
   }): Promise<{ message: string; reservation: FoodReservation }> {

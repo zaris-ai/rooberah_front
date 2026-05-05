@@ -15,8 +15,12 @@ import {
   type FoodReservation,
 } from '../lib/mockApi';
 
-type FoodSlot = 'f1' | 'f2';
+type FoodSlot = 'f1' | 'f2' | 'f3';
 type PortionType = 'full' | 'half' | 'khorak';
+
+type FoodMenuDayWithThirdOption = FoodMenuDay & {
+  food3?: string | null;
+};
 
 const portionOptions: {
   type: PortionType;
@@ -50,14 +54,31 @@ function normalizeDay(day: string) {
   return day.replace('‌', ' ').trim();
 }
 
-
-
 function getReservationKey(dayOfWeek: string) {
   return normalizeDay(dayOfWeek);
 }
 
+function getFoodOptions(day: FoodMenuDayWithThirdOption): {
+  slot: FoodSlot;
+  title: string;
+}[] {
+  return [
+    { slot: 'f1' as const, title: day.food1 },
+    { slot: 'f2' as const, title: day.food2 },
+    { slot: 'f3' as const, title: day.food3 },
+  ]
+    .filter(
+      (item): item is { slot: FoodSlot; title: string } =>
+        typeof item.title === 'string' && item.title.trim().length > 0,
+    )
+    .map((item) => ({
+      slot: item.slot,
+      title: item.title.trim(),
+    }));
+}
+
 export default function FoodReservationPage() {
-  const [menu, setMenu] = useState<FoodMenuDay[]>([]);
+  const [menu, setMenu] = useState<FoodMenuDayWithThirdOption[]>([]);
   const [reservations, setReservations] = useState<FoodReservation[]>([]);
 
   const [loading, setLoading] = useState(true);
@@ -78,7 +99,7 @@ export default function FoodReservationPage() {
         foodApi.getMyReservations(),
       ]);
 
-      setMenu(menuData);
+      setMenu(menuData as FoodMenuDayWithThirdOption[]);
       setReservations(reservationData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'خطا در دریافت برنامه غذایی.');
@@ -114,7 +135,7 @@ export default function FoodReservationPage() {
   const totalMenuDays = sortedMenu.length;
 
   const handleReserve = async (
-    day: FoodMenuDay,
+    day: FoodMenuDayWithThirdOption,
     foodSlot: FoodSlot,
     portionType: PortionType,
   ) => {
@@ -203,7 +224,8 @@ export default function FoodReservationPage() {
                   وضعیت رزرو هفته
                 </div>
                 <div className="mt-1 text-2xl font-black tracking-[-0.04em]">
-                  {toPersianDigits(reservedCount)} از {toPersianDigits(totalMenuDays)} روز
+                  {toPersianDigits(reservedCount)} از{' '}
+                  {toPersianDigits(totalMenuDays)} روز
                 </div>
               </div>
 
@@ -216,13 +238,17 @@ export default function FoodReservationPage() {
               <div
                 className="h-full rounded-full bg-[#4777ff]"
                 style={{
-                  width: `${totalMenuDays ? (reservedCount / totalMenuDays) * 100 : 0}%`,
+                  width: `${
+                    totalMenuDays ? (reservedCount / totalMenuDays) * 100 : 0
+                  }%`,
                 }}
               />
             </div>
 
             <div className="mt-3 text-xs font-bold leading-6 text-[#8b8b84]">
-              برای هر روز می‌توانید یک غذا و نوع سفارش را انتخاب کنید. انتخاب جدید، رزرو قبلی همان روز را ویرایش می‌کند.
+              برای هر روز می‌توانید یک غذا و نوع سفارش را انتخاب کنید. بعضی روزها
+              دو گزینه و بعضی روزها تا سه گزینه غذا دارند. انتخاب جدید، رزرو قبلی
+              همان روز را ویرایش می‌کند.
             </div>
           </section>
 
@@ -234,7 +260,7 @@ export default function FoodReservationPage() {
 
               return (
                 <FoodDayCard
-                  key={`${day.dayOfWeek}-${day.food1}-${day.food2}`}
+                  key={`${day.dayOfWeek}-${day.food1}-${day.food2}-${day.food3 || ''}`}
                   day={day}
                   reservation={reservation}
                   isExpanded={isExpanded}
@@ -261,16 +287,21 @@ function FoodDayCard({
   onReserve,
   onCancel,
 }: {
-  day: FoodMenuDay;
+  day: FoodMenuDayWithThirdOption;
   reservation?: FoodReservation;
   isExpanded: boolean;
   actionLoadingKey: string;
   onToggle: () => void;
-  onReserve: (day: FoodMenuDay, foodSlot: FoodSlot, portionType: PortionType) => void;
+  onReserve: (
+    day: FoodMenuDayWithThirdOption,
+    foodSlot: FoodSlot,
+    portionType: PortionType,
+  ) => void;
   onCancel: (dayOfWeek: string) => void;
 }) {
   const dayKey = getReservationKey(day.dayOfWeek);
   const canModify = day.canModify !== false;
+  const foodOptions = getFoodOptions(day);
 
   return (
     <div
@@ -296,6 +327,10 @@ function FoodDayCard({
             <div className="text-xl font-black tracking-[-0.03em]">
               {day.dayOfWeek}
             </div>
+
+            <span className="rounded-full bg-[#eef3ff] px-3 py-1 text-[11px] font-black text-[#4777ff]">
+              {toPersianDigits(foodOptions.length)} گزینه غذا
+            </span>
 
             {reservation && (
               <span className="rounded-full bg-[#edfff8] px-3 py-1 text-[11px] font-black text-[#1f9f73]">
@@ -339,27 +374,26 @@ function FoodDayCard({
             </div>
           )}
 
-          <div className="mt-4 grid gap-3">
-            <FoodOption
-              day={day}
-              slot="f1"
-              title={day.food1}
-              reservation={reservation}
-              actionLoadingKey={actionLoadingKey}
-              canModify={canModify}
-              onReserve={onReserve}
-            />
-
-            <FoodOption
-              day={day}
-              slot="f2"
-              title={day.food2}
-              reservation={reservation}
-              actionLoadingKey={actionLoadingKey}
-              canModify={canModify}
-              onReserve={onReserve}
-            />
-          </div>
+          {foodOptions.length === 0 ? (
+            <div className="mt-4 rounded-[20px] bg-[#fff0f0] px-4 py-3 text-xs font-black leading-6 text-[#d9534f]">
+              برای این روز غذایی ثبت نشده است.
+            </div>
+          ) : (
+            <div className="mt-4 grid gap-3">
+              {foodOptions.map((option) => (
+                <FoodOption
+                  key={option.slot}
+                  day={day}
+                  slot={option.slot}
+                  title={option.title}
+                  reservation={reservation}
+                  actionLoadingKey={actionLoadingKey}
+                  canModify={canModify}
+                  onReserve={onReserve}
+                />
+              ))}
+            </div>
+          )}
 
           {reservation && (
             <button
@@ -381,22 +415,27 @@ function FoodDayCard({
     </div>
   );
 }
+
 function FoodOption({
   day,
   slot,
   title,
   reservation,
   actionLoadingKey,
-    canModify,
+  canModify,
   onReserve,
 }: {
-  day: FoodMenuDay;
+  day: FoodMenuDayWithThirdOption;
   slot: FoodSlot;
   title: string;
   reservation?: FoodReservation;
   actionLoadingKey: string;
   canModify: boolean;
-  onReserve: (day: FoodMenuDay, foodSlot: FoodSlot, portionType: PortionType) => void;
+  onReserve: (
+    day: FoodMenuDayWithThirdOption,
+    foodSlot: FoodSlot,
+    portionType: PortionType,
+  ) => void;
 }) {
   const selected = reservation?.food === title;
 
@@ -434,7 +473,7 @@ function FoodOption({
               key={portion.type}
               type="button"
               onClick={() => onReserve(day, slot, portion.type)}
-            disabled={!canModify || !!actionLoadingKey}
+              disabled={!canModify || !!actionLoadingKey}
               className={[
                 'min-h-[74px] rounded-[18px] px-2 py-3 text-center transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50',
                 isSelectedPortion
