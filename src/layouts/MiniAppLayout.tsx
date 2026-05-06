@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Bell, Home, SquareParking, Utensils, UserRound } from 'lucide-react';
+import { Bell, SquareParking, Utensils, UserRound } from 'lucide-react';
 
 type MiniAppLayoutProps = {
   title: string;
