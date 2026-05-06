@@ -48,13 +48,8 @@ export default function MiniAppLayout({
         <main className="px-5 pb-28 pt-3">{children}</main>
 
         <nav className="fixed bottom-0 left-1/2 z-40 w-full max-w-[430px] -translate-x-1/2 border-t border-[#ededed] bg-white/90 px-4 py-3 backdrop-blur-xl">
-          <div className="grid grid-cols-4 gap-2">
-            <NavItem
-              to="/units"
-              icon={<Home className="h-5 w-5" />}
-              label="خانه"
-              exact
-            />
+          <div className="grid grid-cols-3 gap-2">
+           
 
             <NavItem
               to="/units"
