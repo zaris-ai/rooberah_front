@@ -11,7 +11,11 @@ export type Spot = {
   code: string;
   row: number;
   col: number;
-  state: SpotState;
+  state: 'free' | 'occupied' | 'mine';
+  occupiedByTelegramUserId?: string | null;
+  occupiedByUsername?: string | null;
+  occupiedByFirstName?: string | null;
+  occupiedByLastName?: string | null;
 };
 
 export type ActiveSession =
