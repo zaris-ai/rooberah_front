@@ -11,16 +11,16 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        512,
-        30544
+        2000,
+        22976
       ],
-      "id": "f7615097-061c-4f1f-926d-6f855fc58846",
+      "id": "fa20dcdd-3a4e-49fb-b1d5-30d704f9ccc1",
       "name": "Telegram Trigger",
       "webhookId": "c2d33a48-d746-403d-b13c-499b8786bba1",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -52,10 +52,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        960,
-        32800
+        2448,
+        25344
       ],
-      "id": "c2664793-963f-4e16-8ea7-d99707ebd3a3",
+      "id": "661025e7-47d6-4a5d-b970-d1926b88d64e",
       "name": "If"
     },
     {
@@ -99,10 +99,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1184,
-        32608
+        2672,
+        24960
       ],
-      "id": "3a839816-08ec-427f-81b9-7338dfa4b1e2",
+      "id": "263f3bd0-46fc-47d2-9ea3-8eb62e469af8",
       "name": "Edit Fields"
     },
     {
@@ -116,16 +116,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        32608
+        2896,
+        24960
       ],
-      "id": "ce89a999-8b3b-4e88-ae9e-ceeee5cd441f",
+      "id": "9000c23d-7bb9-42db-8819-fb08ce542d50",
       "name": "Select User",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "AvgkfevFSSUiNa2W",
+          "name": "rooberah_db_final"
         }
       }
     },
@@ -157,10 +157,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1632,
-        32608
+        3120,
+        24960
       ],
-      "id": "b461f66d-7f96-423c-b6e0-6cbecab74f94",
+      "id": "00c38e1c-1402-40e9-b09b-aa687f895e5a",
       "name": "If1"
     },
     {
@@ -174,15 +174,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        32208
+        3344,
+        24784
       ],
-      "id": "bcce3d39-283e-4fae-8566-b9b38f7ea800",
+      "id": "18498399-43ca-40e1-8a61-c8977a7d2356",
       "name": "Insert New User",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -197,22 +197,22 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        32208
+        3568,
+        24640
       ],
-      "id": "4df5571b-966a-4353-9000-96a484f0115f",
+      "id": "6b669782-10fb-4cea-b488-745eb35eeaa7",
       "name": "send_message_to_user",
       "webhookId": "02096b09-e90e-43b3-8d05-a2bee2df78d3",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
-        "chatId": "={{ $json.telegram_user_id }}",
+        "chatId": "={{ String($json.telegram_user_id) }}",
         "text": "=📥 درخواست ثبت‌نام جدید\n\n👤 نام: {{ $('send_message_to_user').item.json.result.chat.first_name }} \n🔹 نام کاربری: @{{ $('send_message_to_user').item.json.result.chat.username }}\n🆔 Telegram ID: {{ $('Edit Fields').item.json.last_name }}\n\nلطفاً یکی از گزینه‌های زیر را برای بررسی انتخاب کنید:",
         "replyMarkup": "inlineKeyboard",
         "inlineKeyboard": {
@@ -223,7 +223,7 @@
                   {
                     "text": "✅ تایید",
                     "additionalFields": {
-                      "callback_data": "=approve|{{ $('Edit Fields').item.json.chat_id }}"
+                      "callback_data": "=approve|{{ $('Edit Fields').item.json.telegram_user_id }}"
                     }
                   }
                 ]
@@ -235,7 +235,7 @@
                   {
                     "text": "❌ رد",
                     "additionalFields": {
-                      "callback_data": "=reject|{{ $('Edit Fields').item.json.chat_id }}"
+                      "callback_data": "=reject|{{ $('Edit Fields').item.json.telegram_user_id }}"
                     }
                   }
                 ]
@@ -251,18 +251,19 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2752,
-        32208
+        4240,
+        24576
       ],
-      "id": "573e702f-449f-4d0d-a034-9123aebc7e46",
+      "id": "e5e80667-6aec-4be2-9bc7-944cfe0fe763",
       "name": "send_message_to_admin",
       "webhookId": "deffadb2-b585-4c26-9129-a458e56eb3db",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -344,10 +345,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        2080,
-        32576
+        3568,
+        25024
       ],
-      "id": "bb82bcb7-20a1-4b22-abba-1637b80a25d6",
+      "id": "59f6bafd-b3a2-4a55-8959-82d0765a6522",
       "name": "Switch"
     },
     {
@@ -402,16 +403,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2304,
-        32400
+        3792,
+        24768
       ],
-      "id": "72f02ceb-c797-48f3-9548-aa24a5ef5a07",
+      "id": "c22de261-1ffb-434d-9d4a-0fb7c6718fa1",
       "name": "Send a text message",
       "webhookId": "f079af8a-a6af-4775-8668-502afe479342",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -426,16 +427,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2304,
-        32592
+        3792,
+        24960
       ],
-      "id": "093f5a48-7845-47c5-8c49-082b696ffa8b",
+      "id": "ecef3336-ba59-48f0-b112-5c27d214e8fd",
       "name": "Send a text message1",
       "webhookId": "42f85fc1-65be-4a88-9c9b-90dd536b5bfb",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -450,38 +451,38 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2304,
-        32800
+        3792,
+        25168
       ],
-      "id": "18d454c2-74c9-4675-b8b1-9673ac3ad62d",
+      "id": "d82aca64-d3e8-4751-9f30-b3f916b65c5e",
       "name": "Send a text message2",
       "webhookId": "e14bff97-80bc-4bc7-8a58-cbedd9b2f887",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT telegram_user_id\nFROM public.users\nWHERE access_level = 'admin' AND status = 'approved'\nLIMIT 1;",
+        "query": "SELECT telegram_user_id\nFROM public.users\nWHERE access_level = 'admin'\n  AND status = 'approved'\nORDER BY id ASC;",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2304,
-        32208
+        3824,
+        24672
       ],
-      "id": "3e8fa736-3f2b-46d6-bc66-c55accac6257",
+      "id": "8be088a7-7b09-41f3-926f-938dd2985bb4",
       "name": "Execute a SQL query",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -492,10 +493,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        960,
-        26736
+        2448,
+        19600
       ],
-      "id": "be63a37b-b18f-4c31-be0b-e5f12a6d10e6",
+      "id": "ea8fa04f-1071-463b-93e3-8fc64fb546dc",
       "name": "Code in JavaScript"
     },
     {
@@ -1602,6 +1603,131 @@
               },
               "renameOutput": true,
               "outputKey": "search_start"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "64d69e9c-255c-4b07-9f87-c0dd4ffce396",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "confirm_cancel_day_menu",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "confirm_cancel"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "01c809b5-a686-4a10-a2da-81212ed05881",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "status_employee_report",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "status_report"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "328a6d26-0714-468d-b976-fed6355d6acd",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "status_employee_report_period",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "report_period"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "fdb6c7ef-d3cf-4d8f-b6c8-1b6236bc4152",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "status_employee_report_run",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "report_run"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8f587bf8-144a-4701-8a35-fdc3a4ca4569",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "status_employee_search",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "report_search_start"
             }
           ]
         },
@@ -1610,16 +1736,16 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        320,
-        26176
+        1472,
+        18960
       ],
-      "id": "11704db3-82ca-48a7-85db-5cd8f675ef16",
+      "id": "7d9388f1-043e-4ae2-a17e-36ec7a4ebc5b",
       "name": "Switch1"
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "UPDATE public.users\nSET status='rejected', approved_by = $1, rejected_at = NOW()\nWHERE telegram_user_id = $2;",
+        "query": "UPDATE public.users\nSET\n  status = 'rejected',\n  approved_by = $1,\n  rejected_at = NOW()\nWHERE telegram_user_id = $2\n  AND status = 'pending'\nRETURNING *;",
         "options": {
           "queryReplacement": "={{ $json.admin_user_id }}"
         }
@@ -1627,15 +1753,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        24288
+        2896,
+        15632
       ],
-      "id": "54650b42-859e-48fa-a8c3-e5f9c28cbd24",
+      "id": "26ccf5d8-f31f-49cb-8b10-971bcb9d1afb",
       "name": "Execute a SQL query2",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -1679,16 +1805,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        23712
+        2896,
+        15056
       ],
-      "id": "7e49ef9e-0b1b-47c0-8db3-71e389f6b4bc",
+      "id": "f0727319-1658-4007-875b-acf981a05626",
       "name": "send_message_approve_user",
       "webhookId": "deffadb2-b585-4c26-9129-a458e56eb3db",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -1703,76 +1829,23 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1632,
-        24288
+        3120,
+        15632
       ],
-      "id": "302431fc-d69d-455e-8544-61a571ad7dff",
+      "id": "533fa392-649c-43f6-8544-ff533dfd0560",
       "name": "send_message_rejected",
       "webhookId": "deffadb2-b585-4c26-9129-a458e56eb3db",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "chatId": "={{ $json.admin_chat_id }}",
-        "text": "=🏢 مرحله ۲ از ۲\n\nسطح دسترسی انتخاب‌شده: {{$json.value2}}\n\nلطفاً تیم کاربر {{$json.target_user_id}} را انتخاب کنید:",
-        "replyMarkup": "inlineKeyboard",
-        "inlineKeyboard": {
-          "rows": [
-            {
-              "row": {
-                "buttons": [
-                  {
-                    "text": "team_a",
-                    "additionalFields": {
-                      "callback_data": "=set_team|{{$json.target_user_id}}|{{$json.value2}}|team_a"
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "row": {
-                "buttons": [
-                  {
-                    "text": "team_b",
-                    "additionalFields": {
-                      "callback_data": "=set_team|{{$json.target_user_id}}|{{$json.value2}}|team_b"
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        "additionalFields": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        512,
-        23488
-      ],
-      "id": "faba4250-c778-461f-9ea9-0524b77b13e7",
-      "name": "send_team_buttons",
-      "webhookId": "835269ba-61fe-468e-a60d-d37870d74294",
-      "credentials": {
-        "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "UPDATE public.users\nSET\n  status = 'approved',\n  access_level = $1,\n  department = $2,\n  approved_by = $3,\n  approved_at = NOW()\nWHERE telegram_user_id = $4;",
+        "query": "UPDATE public.users\nSET\n  status = 'approved',\n  access_level = $1,\n  department = $2,\n  approved_by = $3,\n  approved_at = NOW()\nWHERE telegram_user_id = $4\n  AND status = 'pending'\nRETURNING *;",
         "options": {
           "queryReplacement": "={{ $json.value2 }},{{ $json.value3 }},{{ $json.admin_user_id }},{{ $json.target_user_id }}"
         }
@@ -1780,15 +1853,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        24096
+        2896,
+        15440
       ],
-      "id": "be37cfac-310b-4e16-b849-8f8109dd2a92",
+      "id": "fde530b3-8fef-430e-ad97-25a16ceb9e66",
       "name": "final_approve_user",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -1804,16 +1877,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1856,
-        24096
+        3344,
+        15440
       ],
-      "id": "33549647-6704-4105-ba4b-783ac788c429",
+      "id": "1e12ac9b-6800-454e-a67c-987d0391fd98",
       "name": "send_final_approved_message_to_user",
       "webhookId": "e6833e3e-891c-4294-8bd3-f7fbbfd81670",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -1829,16 +1902,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2304,
-        24096
+        3792,
+        15440
       ],
-      "id": "f709fac5-0d12-4c8d-9fe1-3a7ebfd4b627",
+      "id": "3efdf4a5-933c-47de-a660-c1f01ea341ce",
       "name": "send_final_approved_message_to_admin",
       "webhookId": "9c669168-228f-4560-83cf-9976ac717c19",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -1895,16 +1968,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        24096
+        3568,
+        15440
       ],
-      "id": "e7398bac-8fb0-4323-a22d-c31e006808b9",
+      "id": "16589471-83e2-433c-bd74-005d6cd44dca",
       "name": "send_final_approved_menu_to_user",
       "webhookId": "f079af8a-a6af-4775-8668-502afe479342",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -1948,16 +2021,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        24480
+        2896,
+        15824
       ],
-      "id": "280a1380-78a4-4085-8164-84ccc753692f",
+      "id": "32ba877c-ff11-404d-85bf-267eaa437453",
       "name": "send _files_menu",
       "webhookId": "047d8615-476c-430e-8fb8-0b2584b25946",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -1968,10 +2041,10 @@
         "filter": {
           "folderId": {
             "__rl": true,
-            "value": "1aw4vJecV-FoQdLWYJiHXxPPTPDBNH1Mx",
+            "value": "1pS6BSKeXPoct8HXLqQXQSudCHFMt2dv_",
             "mode": "list",
             "cachedResultName": "Public files",
-            "cachedResultUrl": "https://drive.google.com/drive/folders/1aw4vJecV-FoQdLWYJiHXxPPTPDBNH1Mx"
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1pS6BSKeXPoct8HXLqQXQSudCHFMt2dv_"
           }
         },
         "options": {}
@@ -1979,15 +2052,15 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1408,
-        24960
+        2896,
+        16304
       ],
-      "id": "e2f31f67-30af-446b-88e0-04a431df1d99",
+      "id": "e0219868-bf2c-4982-ad5c-71061aaf77ed",
       "name": "Search files and folders",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "ByktKRR5j3OYdEfA",
-          "name": "Google Drive OAuth2 API"
+          "id": "xM2NtDZZZuylOPaN",
+          "name": "ziayi"
         }
       }
     },
@@ -1998,16 +2071,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1632,
-        24960
+        3120,
+        16304
       ],
-      "id": "d427f838-4ad1-49e2-a8be-02f1d0349258",
+      "id": "99d04223-83bc-4201-9491-341e2baa8eb2",
       "name": "Create file buttons"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://api.telegram.org/bot8794100819:AAE3l9iicYfSRPeqW0L11d7nWtvTDXHhA2g/sendMessage",
+        "url": "=https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({\n  chat_id: $('Code in JavaScript').item.json.target_user_id,\n  text: $json.text,\n  reply_markup: $json.reply_markup\n}) }}\n",
@@ -2016,10 +2089,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1856,
-        24960
+        3344,
+        16304
       ],
-      "id": "b01e8129-5da5-4be8-91d7-9605370a785a",
+      "id": "b8faa382-8070-42e7-b666-e88c14266074",
       "name": "Send Deactivate Keyboard"
     },
     {
@@ -2035,15 +2108,15 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1408,
-        25152
+        2896,
+        16496
       ],
-      "id": "07db56fd-66a2-4631-8c11-2188aa5b0040",
+      "id": "4ce99383-e8bd-400d-ad5e-114d930b0255",
       "name": "Download file",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "ByktKRR5j3OYdEfA",
-          "name": "Google Drive OAuth2 API"
+          "id": "xM2NtDZZZuylOPaN",
+          "name": "ziayi"
         }
       }
     },
@@ -2057,16 +2130,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1632,
-        25152
+        3120,
+        16496
       ],
-      "id": "f9eab4ca-f202-4185-972a-5037a48be77d",
+      "id": "0a3f0c8d-37d0-4f3b-ac9a-62c77e61617e",
       "name": "Send a document",
       "webhookId": "bca4feaf-b278-4c7c-b7ee-6a5f9f97cdcb",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -2098,16 +2171,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        25728
+        2896,
+        17072
       ],
-      "id": "5f8df0a3-6605-4e4b-8f82-5fd07c765bf9",
+      "id": "979760c8-f087-48a1-a653-5deb851f418f",
       "name": "send __private_files_menu",
       "webhookId": "047d8615-476c-430e-8fb8-0b2584b25946",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -2115,17 +2188,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1-dYx9Fid4kwiEgb6FG10iqBsvC6Kg37dnhW1g9Gn9OI",
+          "value": "1fPrVA4iPDHtHwsx1FhypTa3--6Bt0uQM39wbiSBeiW8",
           "mode": "list",
           "cachedResultName": "configs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-dYx9Fid4kwiEgb6FG10iqBsvC6Kg37dnhW1g9Gn9OI/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fPrVA4iPDHtHwsx1FhypTa3--6Bt0uQM39wbiSBeiW8/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-dYx9Fid4kwiEgb6FG10iqBsvC6Kg37dnhW1g9Gn9OI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fPrVA4iPDHtHwsx1FhypTa3--6Bt0uQM39wbiSBeiW8/edit#gid=0"
         },
         "filtersUI": {
           "values": [
@@ -2140,15 +2213,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1408,
-        31728
+        2896,
+        24080
       ],
-      "id": "49a5812a-de89-4e4c-aa39-c14ee0449140",
+      "id": "53829da4-90dc-4af7-91b7-e24bcbb6c4ca",
       "name": "Get row(s) in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "Q9yd657dXAl8UZB0",
-          "name": "Google Sheets OAuth2 API"
+          "id": "EjhgwtpFmkPaQM9E",
+          "name": "Zaris-sheets"
         }
       }
     },
@@ -2180,10 +2253,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        736,
-        30544
+        2224,
+        22976
       ],
-      "id": "005cd682-1c2d-4905-90e9-440eff859fe1",
+      "id": "8dd77f76-8cdb-495a-a25e-902b9c469507",
       "name": "If2"
     },
     {
@@ -2242,10 +2315,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1856,
-        32704
+        3344,
+        25152
       ],
-      "id": "f15abc05-b0e4-4cfa-9a6b-9502399f404b",
+      "id": "9fee4e51-5bb5-4b67-9858-e5da09ba9a18",
       "name": "Switch2"
     },
     {
@@ -2259,7 +2332,7 @@
               "row": {
                 "buttons": [
                   {
-                    "text": "📅 افزودن غذای هفته",
+                    "text": "📅 مدیریت غذای هفته",
                     "additionalFields": {
                       "callback_data": "=add_week_menu|{{$json.telegram_user_id}}"
                     }
@@ -2302,6 +2375,18 @@
                   }
                 ]
               }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "📊 گزارش وضعیت پرسنل",
+                    "additionalFields": {
+                      "callback_data": "status_employee_report|start"
+                    }
+                  }
+                ]
+              }
             }
           ]
         },
@@ -2312,16 +2397,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        32800
+        3568,
+        25248
       ],
-      "id": "581dc844-af83-4cea-b4c5-d609dd5798ce",
+      "id": "a0d25237-c32f-408e-b3a6-633d211f97d1",
       "name": "send_admin_menu",
       "webhookId": "f079af8a-a6af-4775-8668-502afe479342",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -2336,23 +2421,23 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2304,
-        31008
+        3792,
+        23296
       ],
-      "id": "35a2e180-1b1e-4b43-bf83-92172c08fa8c",
+      "id": "db510a7b-be17-4dd6-8993-c27cb54da104",
       "name": "send _week_days_admin",
       "webhookId": "047d8615-476c-430e-8fb8-0b2584b25946",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT *\nFROM user_actions\nWHERE telegram_user_id = $1\n  AND status = 'active'\n  AND action_type IN (\n    'add_day_menu',\n    'edit_day_menu',\n    'status_employee_search'\n  )\nORDER BY created_at DESC\nLIMIT 1;",
+        "query": "SELECT *\nFROM user_actions\nWHERE telegram_user_id = $1\n  AND status = 'active'\n  AND action_type IN (\n    'add_day_menu',\n    'edit_day_menu',\n    'status_employee_search',\n   'status_employee_report_search'\n  )\nORDER BY created_at DESC\nLIMIT 1;",
         "options": {
           "queryReplacement": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
         }
@@ -2360,15 +2445,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        33184
+        2896,
+        25744
       ],
-      "id": "38fedd4e-f405-40b3-9e58-d8d621f0e9cb",
+      "id": "99b79020-cdaf-49ac-acb6-0eb4920227b1",
       "name": "Check User Status",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -2379,10 +2464,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1792,
-        33552
+        3568,
+        25824
       ],
-      "id": "bbc161a4-a32e-4463-a49d-f7cc7a7e64c2",
+      "id": "f5dff59d-4138-4c3f-9502-977957b16ec1",
       "name": "Extract Foods"
     },
     {
@@ -2396,15 +2481,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2080,
-        32992
+        4016,
+        25728
       ],
-      "id": "7d0e946b-cfe0-4235-92c0-5b8ff6801479",
+      "id": "2cd0058a-bf9a-4920-b2c0-4039cca26fa1",
       "name": "Insert Draft Foods",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -2419,211 +2504,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2976,
-        32992
+        4912,
+        25728
       ],
-      "id": "210e028c-2559-49df-b516-2cb7ca407054",
+      "id": "35f550e3-b5e5-4ec9-bed1-921bd0919ab5",
       "name": "Confirm Food Entry",
       "webhookId": "ba228975-a555-4e38-8648-d2ab83506421",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "const days = [\"یکشنبه\", \"دوشنبه\", \"سه شنبه\", \"چهارشنبه\", \"پنج شنبه\", \"شنبه\", \"جمعه\"];\nconst today = new Date();\nconst tomorrowIndex = (today.getDay() + 1) % 7; // getDay() شنبه=6 یکشنبه=0\nconst tomorrow = days[tomorrowIndex];\n\nreturn [{ json: { tomorrow } }];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        512,
-        22624
-      ],
-      "id": "f4f6c522-b301-4849-a91b-7e718d4bdb5e",
-      "name": "Code in JavaScript1"
-    },
-    {
-      "parameters": {
-        "jsCode": "const foods = items[0].json;\nconst tomorrow = $('Code in JavaScript1').item.json.tomorrow;\n\nconst keyboard = [\n  [{ text: foods.food1, callback_data: `reserve|${tomorrow}|${foods.food1}` }],\n  [{ text: foods.food2, callback_data: `reserve|${tomorrow}|${foods.food2}` }]\n];\n\nreturn [{\n  json: {\n    text: `لطفاً غذای ${tomorrow} را انتخاب کنید:`,\n    reply_markup: { inline_keyboard: keyboard }\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1632,
-        22624
-      ],
-      "id": "d074bbda-58d2-46ec-9c89-d315c53dfe77",
-      "name": "Code in JavaScript2"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "=https://api.telegram.org/bot8794100819:AAE3l9iicYfSRPeqW0L11d7nWtvTDXHhA2g/sendMessage",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({\n    chat_id:$('Telegram Trigger').item.json.callback_query.message.chat.id ,\n    text: $json.text,\n    reply_markup: $json.reply_markup\n}) }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [
-        1856,
-        22624
-      ],
-      "id": "bc6b7746-3909-4d4c-9167-c9d496620493",
-      "name": "send_menu"
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT food1, food2,food3\nFROM week_menu\nWHERE day_of_week = $1;",
-        "options": {
-          "queryReplacement": "={{ $json.tomorrow }}"
-        }
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        1184,
-        22720
-      ],
-      "id": "dc157c87-1ab7-48cd-a292-ce984089dd9e",
-      "name": "get-foods",
-      "alwaysOutputData": true,
-      "credentials": {
-        "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "const now = new Date();\n\nconst tehranHour = Number(\n  new Intl.DateTimeFormat('en-US', {\n    timeZone: 'Asia/Tehran',\n    hour: '2-digit',\n    hour12: false\n  }).format(now)\n);\n\nreturn [\n  {\n    json: {\n      ...$json,\n      tehranHour,\n      reservationClosed: tehranHour >= 19\n    }\n  }\n];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        736,
-        22624
-      ],
-      "id": "fd62bc64-332a-4f81-9257-c19ce178d206",
-      "name": "Check Tehran Time"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "5bfc87cf-177a-4f96-bf2d-79544dcc8760",
-              "leftValue": "={{ $json.reservationClosed }}",
-              "rightValue": "",
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        960,
-        22624
-      ],
-      "id": "3435f056-5f67-46dd-9456-8745b868fed5",
-      "name": "If3"
-    },
-    {
-      "parameters": {
-        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
-        "text": "⏰ مهلت رزرو غذای فردا به پایان رسیده است.  لطفاً در بازه مجاز اقدام کنید.",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        1184,
-        22528
-      ],
-      "id": "42c11255-8957-4509-9435-37831a4bb018",
-      "name": "end_reserve_time",
-      "webhookId": "bca4feaf-b278-4c7c-b7ee-6a5f9f97cdcb",
-      "credentials": {
-        "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "aa1e90fa-ae50-409a-849c-68d6103ec6f4",
-              "leftValue": "={{ !!$json.food1 || !!$json.food2 }}",
-              "rightValue": "",
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        1408,
-        22720
-      ],
-      "id": "674ec13e-8c6b-49ef-9c0e-5dfe3c0ed970",
-      "name": "If4"
-    },
-    {
-      "parameters": {
-        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
-        "text": "📭 برای فردا هنوز منویی ثبت نشده است.",
-        "additionalFields": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        1632,
-        22816
-      ],
-      "id": "9e9a9dd7-c7f4-49e1-a121-866539a1641d",
-      "name": "no food for tomorrow",
-      "webhookId": "bca4feaf-b278-4c7c-b7ee-6a5f9f97cdcb",
-      "credentials": {
-        "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -2638,16 +2528,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        30624
+        2896,
+        23088
       ],
-      "id": "5749dc91-d700-4263-b8b6-7981d6afc812",
+      "id": "06f0bd48-3907-474e-a5c2-f24c14b3ca9f",
       "name": "Check Existing Menu For Day",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -2679,16 +2569,16 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1632,
-        30624
+        3120,
+        23088
       ],
-      "id": "f5163685-2465-4504-8d8a-98436223f461",
+      "id": "80faceb6-8c1f-4f4b-a527-a51d9923b719",
       "name": "If5"
     },
     {
       "parameters": {
         "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
-        "text": "=📋 برای روز {{$json.day_of_week}} قبلاً منو ثبت شده است:\n\n1️⃣ {{$json.food1}}\n2️⃣ {{$json.food2}}\n\nدر صورت نیاز، یکی از گزینه‌های زیر را انتخاب کنید:",
+        "text": "=📋 منوی غذای کارکنان برای روز {{$json.day_of_week}} قبلاً ثبت شده است:\n\n1️⃣ {{$json.food1}}\n2️⃣ {{$json.food2}}\n{{ $json.food3 ? '3️⃣ ' + $json.food3 : '' }}\n\nلطفاً عملیات موردنظر برای منوی این روز را انتخاب کنید:",
         "replyMarkup": "inlineKeyboard",
         "inlineKeyboard": {
           "rows": [
@@ -2698,7 +2588,7 @@
                   {
                     "text": "✏️ ویرایش",
                     "additionalFields": {
-                      "callback_data": "=edit_day_menu|{{$json.week_start_date}}|{{$json.day_of_week}}"
+                      "callback_data": "=edit_day_menu|{{$json.id}}"
                     }
                   }
                 ]
@@ -2708,9 +2598,9 @@
               "row": {
                 "buttons": [
                   {
-                    "text": "❌ لغو",
+                    "text": "حذف",
                     "additionalFields": {
-                      "callback_data": "=cancel_day_menu|{{$json.week_start_date}}|{{$json.day_of_week}}"
+                      "callback_data": "=cancel_day_menu|{{$json.id}}"
                     }
                   }
                 ]
@@ -2725,23 +2615,23 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1856,
-        30704
+        3344,
+        22976
       ],
-      "id": "d345e062-4f45-4357-8322-75bca3d772df",
+      "id": "4917fbb0-9bac-499b-a4c6-64573d5339ba",
       "name": "send_existing_menu_info",
       "webhookId": "047d8615-476c-430e-8fb8-0b2584b25946",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
         "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
-        "text": "=🚫 عملیات لغو شد.\n\nویرایش منوی روز {{$json.value1 || $json.target_user_id || $json.food_day}} انجام نشد.",
+        "text": "=⚠️ حذف منوی غذای کارکنان\n\nآیا مطمئن هستید که این منوی روز از برنامه غذایی هفته حذف شود؟\n",
         "replyMarkup": "inlineKeyboard",
         "inlineKeyboard": {
           "rows": [
@@ -2749,21 +2639,9 @@
               "row": {
                 "buttons": [
                   {
-                    "text": "✏️ ویرایش",
+                    "text": "تایید",
                     "additionalFields": {
-                      "callback_data": "=edit_day_menu|{{$json.day_of_week}}"
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "row": {
-                "buttons": [
-                  {
-                    "text": "❌ لغو",
-                    "additionalFields": {
-                      "callback_data": "=cancel_day_menu|{{$json.day_of_week}}"
+                      "callback_data": "=confirm_cancel_day_menu|{{$json.value1}}"
                     }
                   }
                 ]
@@ -2778,46 +2656,46 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        26112
+        2896,
+        17456
       ],
-      "id": "4ec817f0-7669-45b6-ac8a-d0724f44ee83",
+      "id": "ef754351-a286-4dcf-8acb-a18948be6111",
       "name": "cancel_day_menu",
       "webhookId": "047d8615-476c-430e-8fb8-0b2584b25946",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO user_actions (telegram_user_id, action_type, action_data, status, created_at)\nVALUES (\n  $1,\n  'edit_day_menu',\n  json_build_object(\n    'week_start_date', $2,\n    'day_of_week', $3\n  ),\n  'active',\n  NOW()\n)\nRETURNING *;",
+        "query": "INSERT INTO user_actions (\n  telegram_user_id,\n  action_type,\n  action_data,\n  status,\n  created_at\n)\nSELECT\n  $1,\n  'edit_day_menu',\n  json_build_object(\n    'menu_id', wm.id,\n    'week_start_date', wm.week_start_date,\n    'day_of_week', wm.day_of_week\n  ),\n  'active',\n  NOW()\nFROM week_menu wm\nWHERE wm.id = $2::bigint\nRETURNING *;",
         "options": {
-          "queryReplacement": "={{ $json.admin_user_id }},{{ $json.value1 }},{{ $json.value2 }}"
+          "queryReplacement": "={{ $json.admin_user_id }},{{ $json.value1 }}"
         }
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        25344
+        2896,
+        16688
       ],
-      "id": "237810f0-dc63-4085-ade5-32401ca6a046",
+      "id": "500e1e8f-5041-4415-8887-62b40939b394",
       "name": "Execute a SQL query3",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
     {
       "parameters": {
         "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
-        "text": "=✏️ ویرایش منوی روز {{$json.food_day}}\n\nلطفاً دو غذای جدید را با فرمت زیر ارسال کنید:\n\nغذا ۱ - غذا ۲\n\nمثال:\nجوجه کباب - عدس‌پلو",
+        "text": "=✏️ ویرایش منوی غذای کارکنان\n\nلطفاً غذاهای جدید را با فرمت زیر ارسال کنید:\n\nغذا ۱ - غذا ۲ - غذا ۳\n\nغذای سوم اختیاری است.\n\nمثال:\nجوجه کباب - عدس‌پلو - خوراک مرغ",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -2825,16 +2703,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1632,
-        25344
+        3120,
+        16688
       ],
-      "id": "a0da7d5b-a52b-49f7-b48b-b6f0d809afa1",
+      "id": "f00b89aa-8268-47d6-9e1b-5e8a4c4aaa17",
       "name": "send _edit_foods_admin",
       "webhookId": "047d8615-476c-430e-8fb8-0b2584b25946",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -2849,16 +2727,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2752,
-        32992
+        4688,
+        25728
       ],
-      "id": "798ce140-c935-4825-9196-283af7992951",
+      "id": "d28904c8-37a7-41c1-868a-f9ee4193d72c",
       "name": "done status",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -2889,16 +2767,16 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2304,
-        32992
+        4240,
+        25728
       ],
-      "id": "14c65ba1-c0a9-4068-bb94-5a4ce3a618fc",
+      "id": "eb45a4aa-8fd1-49bc-aacc-8c9a62dafd3b",
       "name": "If6"
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "UPDATE week_menu\nSET food1 = $1,\n    food2 = $2,\n    food3 = $3\nWHERE week_start_date = $4\n  AND day_of_week = $5\nRETURNING *;",
+        "query": "UPDATE week_menu\nSET\n  food1 = NULLIF(NULLIF(NULLIF(BTRIM($1::text), ''), 'null'), 'undefined'),\n  food2 = NULLIF(NULLIF(NULLIF(BTRIM($2::text), ''), 'null'), 'undefined'),\n  food3 = NULLIF(NULLIF(NULLIF(BTRIM($3::text), ''), 'null'), 'undefined')\nWHERE week_start_date = $4\n  AND day_of_week = $5\nRETURNING *;",
         "options": {
           "queryReplacement": "={{ $('Extract Foods').item.json.food1 }},\n{{ $('Extract Foods').item.json.food2 }},\n{{ $('Extract Foods').item.json.food3 }},\n{{ $('Check User Status').item.json.action_data.week_start_date }},\n{{ $('Check User Status').item.json.action_data.day_of_week }}"
         }
@@ -2906,22 +2784,22 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2528,
-        33088
+        4464,
+        25824
       ],
-      "id": "f94a9063-a12a-4a17-9814-eda5b681e4c1",
+      "id": "eb96c1b4-a1b3-40a9-8377-670ca797238c",
       "name": "update_week_menu",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO week_menu (week_start_date, day_of_week, food1, food2, food3)\nVALUES ($1, $2, $3, $4, $5)\nON CONFLICT (week_start_date, day_of_week)\nDO UPDATE SET\n  food1 = EXCLUDED.food1,\n  food2 = EXCLUDED.food2,\n  food3 = EXCLUDED.food3\nRETURNING *;",
+        "query": "INSERT INTO week_menu (week_start_date, day_of_week, food1, food2, food3)\nVALUES (\n  $1,\n  $2,\n  NULLIF(NULLIF(NULLIF(BTRIM($3::text), ''), 'null'), 'undefined'),\n  NULLIF(NULLIF(NULLIF(BTRIM($4::text), ''), 'null'), 'undefined'),\n  NULLIF(NULLIF(NULLIF(BTRIM($5::text), ''), 'null'), 'undefined')\n)\nON CONFLICT (week_start_date, day_of_week)\nDO UPDATE SET\n  food1 = EXCLUDED.food1,\n  food2 = EXCLUDED.food2,\n  food3 = EXCLUDED.food3\nRETURNING *;",
         "options": {
           "queryReplacement": "={{ $('Check User Status').item.json.action_data.week_start_date }},\n{{ $('Check User Status').item.json.action_data.day_of_week }},\n{{ $('Extract Foods').item.json.food1 }},\n{{ $('Extract Foods').item.json.food2 }},\n{{ $('Extract Foods').item.json.food3 }}"
         }
@@ -2929,15 +2807,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2528,
-        32704
+        4464,
+        25440
       ],
-      "id": "bb2033e3-e28f-47e3-ba09-b21cd06edb95",
+      "id": "69401cfd-b433-4a1a-8893-5311ab328457",
       "name": "insert_week_menu",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -2952,36 +2830,36 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        28224
+        3344,
+        19664
       ],
-      "id": "39adc36a-938f-45a5-8de7-4c8c492a9bac",
+      "id": "94191430-6e9f-4fda-be89-bba36eaf66eb",
       "name": "Get Week Menu Summary",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "const summaryRows = $('Get Week Menu Summary').all().map(i => i.json);\n\nconst targetWeekStart =\n  $('Resolve Admin Menu Week').item.json.target_week_start ||\n  $('Code in JavaScript').item.json.value1;\n\nconst chatId =\n  $('Code in JavaScript').item.json.admin_chat_id ||\n  $('Telegram Trigger').item.json.callback_query?.message?.chat?.id ||\n  $('Telegram Trigger').item.json.message?.chat?.id;\n\nconst allDays = [\n  'شنبه',\n  'یکشنبه',\n  'دوشنبه',\n  'سه شنبه',\n  'چهارشنبه',\n  'پنج شنبه',\n];\n\nconst menuMap = {};\n\nfor (const item of summaryRows) {\n  if (!item.day_of_week) continue;\n\n menuMap[item.day_of_week] = {\n  food1: item.food1,\n  food2: item.food2,\n  food3: item.food3,\n};\n}\n\n// اول دکمه‌های روزها را بساز\nconst rows = allDays.map((day) => {\n  const existing = menuMap[day];\n\n  let text = day;\n\n  if (existing) {\nconst foodsText = [\n  existing.food1,\n  existing.food2,\n  existing.food3,\n].filter(Boolean).join(' - ');\n\ntext += ` ✅ (${foodsText})`;  } else {\n    text += ' ➕';\n  }\n\n  return [\n    {\n      text,\n      callback_data: `add_day_menu|${targetWeekStart}|${day}`,\n    },\n  ];\n});\n\n// بعد از ساخته شدن rows، دکمه ارسال اعلان را اضافه کن\nrows.push([\n  {\n    text: '📣 ارسال اطلاع‌رسانی برنامه غذایی هفته',\n    callback_data: `publish_week_menu|${targetWeekStart}`,\n  },\n]);\n\n// دکمه برگشت\nrows.push([\n  {\n    text: '🔙 بازگشت',\n    callback_data: 'back_admin_menu|1',\n  },\n]);\n\nlet text = '🍽 مدیریت برنامه غذایی هفته\\n\\n';\ntext += `📅 هفته: ${targetWeekStart}\\n\\n`;\ntext += 'روز موردنظر را برای افزودن یا ویرایش غذا انتخاب کنید:';\n\nreturn [\n  {\n    json: {\n      chat_id: chatId,\n      text,\n      reply_markup: {\n        inline_keyboard: rows,\n      },\n    },\n  },\n];"
+        "jsCode": "const summaryRows = $('Get Week Menu Summary').all().map(i => i.json);\n\nconst targetWeekStart =\n  $('Resolve Admin Menu Week').item.json.target_week_start ||\n  $('Code in JavaScript').item.json.value1;\n\nconst chatId =\n  $('Code in JavaScript').item.json.admin_chat_id ||\n  $('Telegram Trigger').item.json.callback_query?.message?.chat?.id ||\n  $('Telegram Trigger').item.json.message?.chat?.id;\n\nconst allDays = [\n  'شنبه',\n  'یکشنبه',\n  'دوشنبه',\n  'سه شنبه',\n  'چهارشنبه',\n  'پنج شنبه',\n];\n\nconst menuMap = {};\n\nfor (const item of summaryRows) {\n  if (!item.day_of_week) continue;\n\n menuMap[item.day_of_week] = {\n  food1: item.food1,\n  food2: item.food2,\n  food3: item.food3,\n};\n}\n\n// اول دکمه‌های روزها را بساز\nconst rows = allDays.map((day) => {\n  const existing = menuMap[day];\n\n  let text = day;\n\nif (existing) {\n  const cleanFood = (value) => {\n    if (value === null || value === undefined) return null;\n\n    const text = String(value).trim();\n\n    if (!text) return null;\n    if (text.toLowerCase() === 'null') return null;\n    if (text.toLowerCase() === 'undefined') return null;\n    if (text === '—') return null;\n\n    return text;\n  };\n\n  const foodsText = [\n    cleanFood(existing.food1),\n    cleanFood(existing.food2),\n    cleanFood(existing.food3),\n  ]\n    .filter(Boolean)\n    .join(' - ');\n\n  text += foodsText ? ` ✅ (${foodsText})` : ' ✅';\n} else {\n  text += ' ➕';\n} \n\n  return [\n    {\n      text,\n      callback_data: `add_day_menu|${targetWeekStart}|${day}`,\n    },\n  ];\n});\n\n// بعد از ساخته شدن rows، دکمه ارسال اعلان را اضافه کن\nrows.push([\n  {\n    text: '📣 ارسال اطلاع‌رسانی برنامه غذایی هفته',\n    callback_data: `publish_week_menu|${targetWeekStart}`,\n  },\n]);\n\n// دکمه برگشت\nrows.push([\n  {\n    text: '🔙 بازگشت',\n    callback_data: 'back_admin_menu|1',\n  },\n]);\n\nlet text = '🍽 مدیریت برنامه غذایی هفته\\n\\n';\ntext += `📅 هفته: ${targetWeekStart}\\n\\n`;\ntext += 'روز موردنظر را برای افزودن یا ویرایش غذا انتخاب کنید:';\n\nreturn [\n  {\n    json: {\n      chat_id: chatId,\n      text,\n      reply_markup: {\n        inline_keyboard: rows,\n      },\n    },\n  },\n];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        28224
+        3568,
+        19664
       ],
-      "id": "45c747c6-0e6a-4d67-9bcc-4dd95a61d31f",
+      "id": "ca0dee17-ef83-4f64-a83e-1e4bb0ecbb2c",
       "name": "Build Food Days Keyboard"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://api.telegram.org/bot8794100819:AAE3l9iicYfSRPeqW0L11d7nWtvTDXHhA2g/sendMessage",
+        "url": "=https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({\n  chat_id: $json.chat_id,\n  text: $json.text,\n  reply_markup: $json.reply_markup\n}) }}",
@@ -2990,10 +2868,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2304,
-        28608
+        3792,
+        20544
       ],
-      "id": "0d1f278f-6a0d-4d5a-a2b0-749b904c64f3",
+      "id": "12b07999-da48-45e5-8e09-e1420dfff695",
       "name": "HTTP Request"
     },
     {
@@ -3007,15 +2885,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        30192
+        2896,
+        22640
       ],
-      "id": "cc1ea3f4-9511-4415-9881-b0d75c947278",
+      "id": "5300d9c7-eb32-4d6e-a0d8-4989e6c792bc",
       "name": "Insert Reservation",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3030,37 +2908,38 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1632,
-        30192
+        3120,
+        22640
       ],
-      "id": "a5ff7127-9324-4419-9512-e81521e59dd0",
+      "id": "2a16985f-94d7-4652-ad03-b0028f4a55fc",
       "name": "send_reserve message",
       "webhookId": "047d8615-476c-430e-8fb8-0b2584b25946",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT telegram_user_id\nFROM public.users\nWHERE access_level = 'admin'\n  AND status = 'approved'\nORDER BY id ASC\nLIMIT 1;",
+        "query": "SELECT DISTINCT telegram_user_id\nFROM public.users\nWHERE access_level = 'admin'\n  AND status = 'approved'\n  AND telegram_user_id IS NOT NULL\nORDER BY telegram_user_id ASC;",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2528,
-        32208
+        4032,
+        24624
       ],
-      "id": "251f2062-678f-469c-8a17-555e6eac8a5f",
+      "id": "83e3da67-5443-4f4c-9830-c053fc8b2ccd",
       "name": "find_admin",
+      "executeOnce": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3073,15 +2952,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        26688
+        2896,
+        18032
       ],
-      "id": "98ab938a-0737-4633-81a4-ede6e5cc53ec",
+      "id": "f82a7102-1c2a-4bf4-b505-9e7298cdbfa4",
       "name": "Execute a SQL query4",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3092,10 +2971,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1632,
-        26688
+        3120,
+        18032
       ],
-      "id": "3d5572c4-99d1-436e-aac3-bf13fbca06b1",
+      "id": "588d2076-d95d-4b7a-bb90-6233752cfde7",
       "name": "Code in JavaScript3"
     },
     {
@@ -3110,16 +2989,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1856,
-        26688
+        3344,
+        18032
       ],
-      "id": "4d1c750a-4439-491f-9142-631164d69f65",
+      "id": "c9638f23-f510-45c7-bde8-7c601b1e701f",
       "name": "Send a text message5",
       "webhookId": "6fa5a593-0e6d-4662-be9c-d32b91a23cbc",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -3134,34 +3013,34 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        31248
+        3120,
+        23616
       ],
-      "id": "d2938942-2fa1-4d09-9e9a-47483f72b2a6",
+      "id": "5bc3f337-9565-4c0d-b3fe-7809286362b5",
       "name": "get_reservations_report",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "const rows = items.map(i => i.json).filter(r => r.day_of_week);\n\nconst weekStartJalali = $('Code in JavaScript4').item.json.target_week_start_jalali;\n\nif (!rows.length) {\n  return [\n    {\n      json: {\n        text: `📊 گزارش کامل رزروهای هفته\n\nهفته شروع‌شونده از: ${weekStartJalali}\n\nهیچ رزروی برای این هفته ثبت نشده است.`,\n      },\n    },\n  ];\n}\n\nconst dayOrder = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنج شنبه'];\n\nconst grouped = {};\n\nfor (const row of rows) {\n  const day = row.day_of_week || 'نامشخص';\n  if (!grouped[day]) grouped[day] = [];\n  grouped[day].push(row);\n}\n\nlet text = `📊 گزارش کامل رزروهای هفته\n\nهفته شروع‌شونده از: ${weekStartJalali}\n\n`;\n\nfor (const day of dayOrder) {\n  if (!grouped[day]) continue;\n\n  text += `🗓 ${day}\\n`;\n\n  grouped[day].forEach((row, index) => {\n    const fullName = `${row.first_name || ''}`.trim() || 'بدون نام';\n    const username = row.username ? `@${row.username}` : 'بدون یوزرنیم';\n    const portion = row.portion_label || 'پرس کامل';\n\n    text += `${index + 1}. 👤 ${fullName}\\n`;\n    text += `   🔹 ${username}\\n`;\n    text += `   🍽 ${row.food} - ${portion}\\n\\n`;\n  });\n}\n\nreturn [\n  {\n    json: {\n      text: text.trim(),\n    },\n  },\n];"
+        "jsCode": "const rows = items.map(i => i.json).filter(r => r.day_of_week);\n\nconst weekStartJalali =\n  $('Code in JavaScript4').item.json.target_week_start_jalali || 'نامشخص';\n\nconst chatId =\n  $('Code in JavaScript').item.json.admin_chat_id ||\n  $('Telegram Trigger').item.json.callback_query?.message?.chat?.id ||\n  $('Telegram Trigger').item.json.message?.chat?.id;\n\nconst MAX_MESSAGE_LENGTH = 3500;\n\nconst dayOrder = [\n  'شنبه',\n  'یکشنبه',\n  'دوشنبه',\n  'سه شنبه',\n  'سه‌شنبه',\n  'چهارشنبه',\n  'پنج شنبه',\n  'پنج‌شنبه',\n];\n\nfunction normalizeDay(value) {\n  return String(value || '').replace(/‌/g, ' ').trim();\n}\n\nfunction cleanText(value, fallback = '—') {\n  const text = String(value || '').trim();\n  return text || fallback;\n}\n\nfunction cleanName(row) {\n  const firstName = cleanText(row.first_name, '');\n  const lastName = cleanText(row.last_name, '');\n\n  const fullName = `${firstName} ${lastName}`.trim();\n\n  if (fullName) return fullName;\n  if (row.username) return `@${row.username}`;\n\n  return 'بدون نام';\n}\n\nfunction cleanUsername(row) {\n  const username = String(row.username || '').trim();\n\n  if (!username) return 'بدون یوزرنیم';\n\n  return username.startsWith('@') ? username : `@${username}`;\n}\n\nfunction cleanPortion(row) {\n  return cleanText(row.portion_label, 'پرس کامل');\n}\n\nfunction cleanFood(row) {\n  return cleanText(row.food, 'غذا ثبت نشده');\n}\n\nfunction buildRowLine(row, index) {\n  return [\n    `${index + 1}. 👤 ${cleanName(row)}`,\n    `   🔹 ${cleanUsername(row)}`,\n    `   🍽 ${cleanFood(row)} - ${cleanPortion(row)}`,\n  ].join('\\n');\n}\n\nif (!rows.length) {\n  return [\n    {\n      json: {\n        chat_id: chatId,\n        text:\n`📊 گزارش کامل رزروهای هفته\n\nهفته شروع‌شونده از: ${weekStartJalali}\n\nهیچ رزروی برای این هفته ثبت نشده است.`,\n      },\n    },\n  ];\n}\n\nconst grouped = {};\n\nfor (const row of rows) {\n  const day = normalizeDay(row.day_of_week) || 'نامشخص';\n\n  if (!grouped[day]) {\n    grouped[day] = [];\n  }\n\n  grouped[day].push(row);\n}\n\nconst sortedDays = Object.keys(grouped).sort((a, b) => {\n  const ai = dayOrder.findIndex(d => normalizeDay(d) === normalizeDay(a));\n  const bi = dayOrder.findIndex(d => normalizeDay(d) === normalizeDay(b));\n\n  return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);\n});\n\nconst output = [];\n\nlet partNumber = 1;\nlet currentText =\n`📊 گزارش کامل رزروهای هفته\n📅 هفته شروع‌شونده از: ${weekStartJalali}\n🧾 تعداد کل رزروها: ${rows.length}\n\n`;\n\nfunction pushCurrentText() {\n  const text = currentText.trim();\n\n  if (!text) return;\n\n  output.push({\n    json: {\n      chat_id: chatId,\n      text,\n      part: partNumber,\n    },\n  });\n\n  partNumber += 1;\n  currentText = '';\n}\n\nfunction appendBlock(block) {\n  if (!block.trim()) return;\n\n  if ((currentText + '\\n' + block).length > MAX_MESSAGE_LENGTH) {\n    pushCurrentText();\n    currentText =\n`📊 ادامه گزارش رزروهای هفته\n📅 هفته شروع‌شونده از: ${weekStartJalali}\n\n`;\n  }\n\n  currentText += block + '\\n\\n';\n}\n\nfor (const day of sortedDays) {\n  const dayRows = grouped[day] || [];\n\n  let dayHeader = `🗓 ${day} — ${dayRows.length} رزرو\\n`;\n\n  appendBlock(dayHeader);\n\n  dayRows.forEach((row, index) => {\n    const block = buildRowLine(row, index);\n    appendBlock(block);\n  });\n}\n\npushCurrentText();\n\nconst totalParts = output.length;\n\nreturn output.map((item, index) => {\n  return {\n    json: {\n      ...item.json,\n      text:\n`${item.json.text}\n\n━━━━━━━━━━━━━━\nصفحه ${index + 1} از ${totalParts}`,\n      total_parts: totalParts,\n    },\n  };\n});"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1856,
-        31248
+        3344,
+        23616
       ],
-      "id": "7afec9d0-d68d-4aa2-8422-1c91a2b57444",
+      "id": "73008ba5-47a9-4868-ae74-0951bc74c80b",
       "name": "format_reservations_report"
     },
     {
       "parameters": {
-        "chatId": "={{ $('Code in JavaScript').item.json.admin_chat_id }}",
+        "chatId": "={{ $json.chat_id }}",
         "text": "={{ $json.text }}",
         "additionalFields": {
           "appendAttribution": false,
@@ -3171,30 +3050,30 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        31248
+        3568,
+        23616
       ],
-      "id": "879a961d-7f75-4525-8359-8589b45ff693",
+      "id": "b7ba2408-4d3c-40ad-b4d8-8c01fc120024",
       "name": "Send a text message6",
       "webhookId": "edb0a021-2749-4d6e-9fb2-f9fb5f5775b3",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "const now = new Date();\n\nconst tehranNow = new Date(\n  now.toLocaleString('en-US', { timeZone: 'Asia/Tehran' })\n);\n\n// JS: Sunday=0 ... Saturday=6\nconst jsDay = tehranNow.getDay();\n\n// فاصله تا شنبه همین هفته\nconst daysSinceSaturday = (jsDay + 1) % 7;\n\n// شنبه هفته جاری\nconst weekStart = new Date(tehranNow);\nweekStart.setDate(tehranNow.getDate() - daysSinceSaturday);\nweekStart.setHours(0, 0, 0, 0);\n\nconst fmt = (d) => {\n  const y = d.getFullYear();\n  const m = String(d.getMonth() + 1).padStart(2, '0');\n  const day = String(d.getDate()).padStart(2, '0');\n  return `${y}-${m}-${day}`;\n};\n\nconst fmtJalali = (d) => {\n  return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {\n    year: 'numeric',\n    month: '2-digit',\n    day: '2-digit',\n  }).format(d);\n};\n\nreturn [\n  {\n    json: {\n      target_week_start: fmt(weekStart),\n      target_week_start_jalali: fmtJalali(weekStart),\n    },\n  },\n];"
+        "jsCode": "const TEHRAN_TZ = \"Asia/Tehran\";\nconst CUTOFF_HOUR = 19;\nconst CUTOFF_MINUTE = 0;\n\nfunction getTehranNowParts(date = new Date()) {\n  const parts = new Intl.DateTimeFormat(\"en-US\", {\n    timeZone: TEHRAN_TZ,\n    year: \"numeric\",\n    month: \"2-digit\",\n    day: \"2-digit\",\n    hour: \"2-digit\",\n    minute: \"2-digit\",\n    second: \"2-digit\",\n    hourCycle: \"h23\",\n  }).formatToParts(date);\n\n  const map = {};\n  for (const part of parts) {\n    map[part.type] = part.value;\n  }\n\n  return {\n    year: Number(map.year),\n    month: Number(map.month),\n    day: Number(map.day),\n    hour: Number(map.hour),\n    minute: Number(map.minute),\n    second: Number(map.second),\n  };\n}\n\nfunction addDaysUtc(date, days) {\n  const result = new Date(date);\n  result.setUTCDate(result.getUTCDate() + days);\n  return result;\n}\n\nfunction toIsoDate(date) {\n  return date.toISOString().slice(0, 10);\n}\n\nfunction toPersianDigits(value) {\n  return String(value).replace(/\\d/g, (digit) => \"۰۱۲۳۴۵۶۷۸۹\"[digit]);\n}\n\nfunction toJalali(date) {\n  const formatted = new Intl.DateTimeFormat(\"fa-IR-u-ca-persian\", {\n    timeZone: TEHRAN_TZ,\n    year: \"numeric\",\n    month: \"2-digit\",\n    day: \"2-digit\",\n  }).format(date);\n\n  return toPersianDigits(formatted);\n}\n\nconst nowParts = getTehranNowParts();\n\nconst todayTehranAsUtcDate = new Date(Date.UTC(\n  nowParts.year,\n  nowParts.month - 1,\n  nowParts.day\n));\n\n// JS day:\n// Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5, Saturday=6\nconst jsDay = todayTehranAsUtcDate.getUTCDay();\n\n// شنبه شروع هفته است\nconst daysSinceSaturday = (jsDay - 6 + 7) % 7;\n\nconst currentWeekStart = addDaysUtc(todayTehranAsUtcDate, -daysSinceSaturday);\nconst nextWeekStart = addDaysUtc(currentWeekStart, 7);\n\n// منطق انتخاب هفته گزارش:\n// شنبه تا پنجشنبه قبل از ۱۹:۰۰ => هفته جاری\n// پنجشنبه از ۱۹:۰۰ به بعد و کل جمعه => هفته بعد\nlet targetWeekStart = currentWeekStart;\nlet reportWeekMode = \"current_week\";\n\nconst isThursdayAfterCutoff =\n  jsDay === 4 &&\n  (\n    nowParts.hour > CUTOFF_HOUR ||\n    (nowParts.hour === CUTOFF_HOUR && nowParts.minute >= CUTOFF_MINUTE)\n  );\n\nconst isFriday = jsDay === 5;\n\nif (isThursdayAfterCutoff || isFriday) {\n  targetWeekStart = nextWeekStart;\n  reportWeekMode = \"next_week\";\n}\n\nreturn [\n  {\n    json: {\n      target_week_start: toIsoDate(targetWeekStart),\n      target_week_start_jalali: toJalali(targetWeekStart),\n      current_week_start: toIsoDate(currentWeekStart),\n      current_week_start_jalali: toJalali(currentWeekStart),\n      next_week_start: toIsoDate(nextWeekStart),\n      next_week_start_jalali: toJalali(nextWeekStart),\n      report_week_mode: reportWeekMode,\n      tehran_weekday_js: jsDay,\n      tehran_hour: nowParts.hour,\n      tehran_minute: nowParts.minute,\n    },\n  },\n];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1408,
-        31248
+        2896,
+        23616
       ],
-      "id": "cf534d27-ef44-46b4-8805-4ceb3b09c969",
+      "id": "29a2ba8d-fa1e-49e6-a147-5ef2335eb4a8",
       "name": "Code in JavaScript4"
     },
     {
@@ -3237,23 +3116,23 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        25920
+        2896,
+        17264
       ],
-      "id": "54bc270a-eee5-4df9-b21a-d7da60d6dd0d",
+      "id": "08828a67-bc38-48d5-b5a3-b21c6fab3941",
       "name": "Send a text message7",
       "webhookId": "1eb97146-2332-43c1-9c5a-94ce72676845",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT\n  day_of_week,\n  food,\n  portion_label,\n  COUNT(*) AS people_count,\n  SUM(portion_qty) AS total_portion_qty\nFROM reservations\nWHERE week_start_date = $1\nGROUP BY day_of_week, food, portion_label\nORDER BY\n  CASE day_of_week\n    WHEN 'شنبه' THEN 1\n    WHEN 'یکشنبه' THEN 2\n    WHEN 'دوشنبه' THEN 3\n    WHEN 'سه شنبه' THEN 4\n    WHEN 'چهارشنبه' THEN 5\n    WHEN 'پنج شنبه' THEN 6\n    ELSE 99\n  END,\n  food,\n  portion_label;",
+        "query": "WITH filtered_reservations AS (\n  SELECT\n    telegram_user_id::text AS telegram_user_id,\n    REPLACE(TRIM(day_of_week), '‌', ' ') AS day_of_week,\n    NULLIF(TRIM(food), '') AS food,\n    COALESCE(NULLIF(TRIM(portion_label), ''), 'پرس کامل') AS portion_label,\n    COALESCE(portion_qty, 1)::numeric AS portion_qty\n  FROM reservations\n  WHERE week_start_date = $1\n),\n\nweekly_totals AS (\n  SELECT\n    COUNT(*)::bigint AS total_reservations,\n    COUNT(DISTINCT telegram_user_id)::bigint AS weekly_unique_users,\n    COALESCE(SUM(portion_qty), 0)::numeric AS weekly_total_portion_qty\n  FROM filtered_reservations\n),\n\ngrouped_summary AS (\n  SELECT\n    day_of_week,\n    food,\n    portion_label,\n    COUNT(*)::bigint AS people_count,\n    COALESCE(SUM(portion_qty), 0)::numeric AS total_portion_qty\n  FROM filtered_reservations\n  WHERE food IS NOT NULL\n  GROUP BY day_of_week, food, portion_label\n),\n\nfinal_rows AS (\n  SELECT\n    grouped_summary.day_of_week,\n    grouped_summary.food,\n    grouped_summary.portion_label,\n    grouped_summary.people_count,\n    grouped_summary.total_portion_qty,\n    weekly_totals.total_reservations,\n    weekly_totals.weekly_unique_users,\n    weekly_totals.weekly_total_portion_qty,\n    CASE grouped_summary.day_of_week\n      WHEN 'شنبه' THEN 1\n      WHEN 'یکشنبه' THEN 2\n      WHEN 'دوشنبه' THEN 3\n      WHEN 'سه شنبه' THEN 4\n      WHEN 'سه‌شنبه' THEN 4\n      WHEN 'چهارشنبه' THEN 5\n      WHEN 'پنج شنبه' THEN 6\n      WHEN 'پنج‌شنبه' THEN 6\n      ELSE 99\n    END AS day_sort,\n    CASE grouped_summary.portion_label\n      WHEN 'پرس کامل' THEN 1\n      WHEN 'نیم پرس' THEN 2\n      WHEN 'خوراک' THEN 3\n      ELSE 99\n    END AS portion_sort\n  FROM grouped_summary\n  CROSS JOIN weekly_totals\n\n  UNION ALL\n\n  SELECT\n    NULL::text AS day_of_week,\n    NULL::text AS food,\n    NULL::text AS portion_label,\n    0::bigint AS people_count,\n    0::numeric AS total_portion_qty,\n    weekly_totals.total_reservations,\n    weekly_totals.weekly_unique_users,\n    weekly_totals.weekly_total_portion_qty,\n    999 AS day_sort,\n    999 AS portion_sort\n  FROM weekly_totals\n  WHERE NOT EXISTS (SELECT 1 FROM grouped_summary)\n)\n\nSELECT\n  $1::date AS target_week_start,\n  day_of_week,\n  food,\n  portion_label,\n  people_count,\n  total_portion_qty,\n  total_reservations,\n  weekly_unique_users,\n  weekly_total_portion_qty\nFROM final_rows\nORDER BY\n  day_sort,\n  food NULLS LAST,\n  portion_sort;",
         "options": {
           "queryReplacement": "={{ $('Code in JavaScript5').item.json.target_week_start }}"
         }
@@ -3261,29 +3140,29 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        31440
+        3120,
+        23808
       ],
-      "id": "52fffa38-0a48-428f-9af1-f8ed6536de3a",
+      "id": "aefa81e5-42da-4429-8ed9-76d610069f27",
       "name": "reservation_summary",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "const rows = items.map(i => i.json).filter(r => r.day_of_week);\n\nconst weekStartJalali = $('Code in JavaScript5').item.json.target_week_start_jalali;\n\nif (!rows.length) {\n  return [\n    {\n      json: {\n        text: `🛒 خلاصه خرید غذای کل هفته\n\nهفته شروع‌شونده از: ${weekStartJalali}\n\nبرای این هفته هیچ رزروی ثبت نشده است.`,\n      },\n    },\n  ];\n}\n\nconst dayOrder = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنج شنبه'];\n\nconst grouped = {};\n\nfor (const row of rows) {\n  const day = row.day_of_week || 'نامشخص';\n  if (!grouped[day]) grouped[day] = [];\n  grouped[day].push(row);\n}\n\nlet totalPeople = 0;\nlet totalPortionQty = 0;\n\nlet text = `🛒 خلاصه خرید غذای کل هفته\n\nهفته شروع‌شونده از: ${weekStartJalali}\n\n`;\n\nfor (const day of dayOrder) {\n  if (!grouped[day]) continue;\n\n  text += `🗓 ${day}\\n`;\n\n  grouped[day].forEach((row, index) => {\n    const peopleCount = Number(row.people_count || 0);\n    const portionQty = Number(row.total_portion_qty || 0);\n\n    totalPeople += peopleCount;\n    totalPortionQty += portionQty;\n\n    text += `${index + 1}) 🍽 ${row.food} - ${row.portion_label || 'پرس کامل'}: ${peopleCount} نفر / ${portionQty} پرس\\n`;\n  });\n\n  text += '\\n';\n}\n\ntext += `👥 مجموع نفرات هفته: ${totalPeople}\n📦 مجموع پرس معادل هفته: ${totalPortionQty}`;\n\nreturn [\n  {\n    json: {\n      text: text.trim(),\n    },\n  },\n];"
+        "jsCode": "const items = $input.all();\nconst rawRows = items.map((item) => item.json || {});\n\nconst rows = rawRows.filter((row) => row.day_of_week && row.food);\nconst firstRow = rawRows[0] || {};\n\nconst DAY_ORDER = {\n  \"شنبه\": 1,\n  \"یکشنبه\": 2,\n  \"دوشنبه\": 3,\n  \"سه شنبه\": 4,\n  \"سه‌شنبه\": 4,\n  \"چهارشنبه\": 5,\n  \"پنج شنبه\": 6,\n  \"پنج‌شنبه\": 6,\n};\n\nfunction normalizeDay(value) {\n  return String(value || \"\").replace(/‌/g, \" \").trim();\n}\n\nfunction toNumber(value) {\n  const numberValue = Number(value);\n  return Number.isFinite(numberValue) ? numberValue : 0;\n}\n\nfunction formatQty(value) {\n  const numberValue = toNumber(value);\n\n  if (Number.isInteger(numberValue)) {\n    return String(numberValue);\n  }\n\n  return String(Math.round(numberValue * 100) / 100);\n}\n\nfunction toPersianDigits(value) {\n  return String(value).replace(/\\d/g, (digit) => \"۰۱۲۳۴۵۶۷۸۹\"[digit]);\n}\n\nfunction addDaysToIsoDate(isoDate, days) {\n  if (!isoDate) return null;\n\n  const date = new Date(`${isoDate}T00:00:00+03:30`);\n  date.setDate(date.getDate() + days);\n\n  return date.toISOString().slice(0, 10);\n}\n\nfunction toJalaliDate(isoDate) {\n  if (!isoDate) return \"\";\n\n  try {\n    const date = new Date(`${isoDate}T00:00:00+03:30`);\n\n    return new Intl.DateTimeFormat(\"fa-IR-u-ca-persian\", {\n      timeZone: \"Asia/Tehran\",\n      year: \"numeric\",\n      month: \"2-digit\",\n      day: \"2-digit\",\n    }).format(date);\n  } catch (error) {\n    return isoDate;\n  }\n}\n\nconst targetWeekStart = firstRow.target_week_start\n  ? String(firstRow.target_week_start).slice(0, 10)\n  : \"\";\n\nconst targetWeekEnd = addDaysToIsoDate(targetWeekStart, 5);\n\nconst targetWeekStartJalali = toJalaliDate(targetWeekStart);\nconst targetWeekEndJalali = toJalaliDate(targetWeekEnd);\n\nconst totalReservations = toNumber(firstRow.total_reservations);\nconst weeklyUniqueUsers = toNumber(firstRow.weekly_unique_users);\nconst weeklyTotalPortionQty = toNumber(firstRow.weekly_total_portion_qty);\n\nconst rowsByDay = new Map();\n\nfor (const row of rows) {\n  const day = normalizeDay(row.day_of_week);\n\n  if (!rowsByDay.has(day)) {\n    rowsByDay.set(day, []);\n  }\n\n  rowsByDay.get(day).push({\n    day_of_week: day,\n    food: row.food,\n    portion_label: row.portion_label || \"پرس کامل\",\n    people_count: toNumber(row.people_count),\n    total_portion_qty: toNumber(row.total_portion_qty),\n  });\n}\n\nconst sortedDays = Array.from(rowsByDay.keys()).sort((a, b) => {\n  return (DAY_ORDER[a] || 99) - (DAY_ORDER[b] || 99);\n});\n\nlet text = \"\";\n\ntext += \"🍽 خلاصه خرید غذای کل هفته\\n\";\n\nif (targetWeekStartJalali && targetWeekEndJalali) {\n  text += `📅 بازه هفته: از ${targetWeekStartJalali} تا ${targetWeekEndJalali}\\n`;\n}\n\nif (targetWeekStart) {\n  text += `🗓 تاریخ شروع هفته میلادی: ${targetWeekStart}\\n`;\n}\n\ntext += \"\\n\";\n\nif (rows.length === 0) {\n  text += \"برای این هفته هیچ رزروی ثبت نشده است.\\n\";\n} else {\n  for (const day of sortedDays) {\n    const dayRows = rowsByDay.get(day) || [];\n\n    const dailyReservations = dayRows.reduce(\n      (sum, row) => sum + row.people_count,\n      0\n    );\n\n    const dailyPortionQty = dayRows.reduce(\n      (sum, row) => sum + row.total_portion_qty,\n      0\n    );\n\n    text += `📌 ${day} — ${dailyReservations} رزرو / ${formatQty(dailyPortionQty)} پرس معادل\\n`;\n\n    dayRows.forEach((row, index) => {\n      text += `${index + 1}) ${row.food} - ${row.portion_label}: ${row.people_count} نفر / ${formatQty(row.total_portion_qty)} پرس\\n`;\n    });\n\n    text += \"\\n\";\n  }\n}\n\ntext += \"━━━━━━━━━━━━━━\\n\";\ntext += `👥 تعداد کاربران یکتای هفته: ${weeklyUniqueUsers}\\n`;\ntext += `🧾 مجموع رزروهای هفته: ${totalReservations}\\n`;\ntext += `📦 مجموع پرس معادل هفته: ${formatQty(weeklyTotalPortionQty)}\\n`;\n\nreturn [\n  {\n    json: {\n      text: text.trim(),\n      target_week_start: targetWeekStart,\n      target_week_start_jalali: targetWeekStartJalali,\n      target_week_end: targetWeekEnd,\n      target_week_end_jalali: targetWeekEndJalali,\n      weekly_unique_users: weeklyUniqueUsers,\n      total_reservations: totalReservations,\n      weekly_total_portion_qty: weeklyTotalPortionQty,\n    },\n  },\n];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1856,
-        31440
+        3344,
+        23808
       ],
-      "id": "03750c26-6dd7-4637-9eab-48c9c25a2e66",
+      "id": "7802385a-a1b4-4a74-adf6-0a0e2a65daf6",
       "name": "format_reservations_summary"
     },
     {
@@ -3298,30 +3177,30 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        31440
+        3568,
+        23808
       ],
-      "id": "c544ed37-6dea-40ea-86e6-1829dfe80b8e",
+      "id": "3b5ab331-6693-4432-b6ff-fb6a4f86d134",
       "name": "Send a text message8",
       "webhookId": "edb0a021-2749-4d6e-9fb2-f9fb5f5775b3",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "const now = new Date();\n\nconst tehranNow = new Date(\n  now.toLocaleString('en-US', { timeZone: 'Asia/Tehran' })\n);\n\nconst jsDay = tehranNow.getDay();\nconst daysSinceSaturday = (jsDay + 1) % 7;\n\nconst weekStart = new Date(tehranNow);\nweekStart.setDate(tehranNow.getDate() - daysSinceSaturday);\nweekStart.setHours(0, 0, 0, 0);\n\nconst fmt = (d) => {\n  const y = d.getFullYear();\n  const m = String(d.getMonth() + 1).padStart(2, '0');\n  const day = String(d.getDate()).padStart(2, '0');\n  return `${y}-${m}-${day}`;\n};\n\nconst fmtJalali = (d) => {\n  return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {\n    year: 'numeric',\n    month: '2-digit',\n    day: '2-digit',\n  }).format(d);\n};\n\nreturn [\n  {\n    json: {\n      target_week_start: fmt(weekStart),\n      target_week_start_jalali: fmtJalali(weekStart),\n    },\n  },\n];"
+        "jsCode": "const TEHRAN_TZ = \"Asia/Tehran\";\nconst CUTOFF_HOUR = 19;\nconst CUTOFF_MINUTE = 0;\n\nfunction getTehranNowParts(date = new Date()) {\n  const parts = new Intl.DateTimeFormat(\"en-US\", {\n    timeZone: TEHRAN_TZ,\n    year: \"numeric\",\n    month: \"2-digit\",\n    day: \"2-digit\",\n    hour: \"2-digit\",\n    minute: \"2-digit\",\n    second: \"2-digit\",\n    hourCycle: \"h23\",\n  }).formatToParts(date);\n\n  const map = {};\n  for (const part of parts) {\n    map[part.type] = part.value;\n  }\n\n  return {\n    year: Number(map.year),\n    month: Number(map.month),\n    day: Number(map.day),\n    hour: Number(map.hour),\n    minute: Number(map.minute),\n    second: Number(map.second),\n  };\n}\n\nfunction addDaysUtc(date, days) {\n  const result = new Date(date);\n  result.setUTCDate(result.getUTCDate() + days);\n  return result;\n}\n\nfunction toIsoDate(date) {\n  return date.toISOString().slice(0, 10);\n}\n\nfunction toPersianDigits(value) {\n  return String(value).replace(/\\d/g, (digit) => \"۰۱۲۳۴۵۶۷۸۹\"[digit]);\n}\n\nfunction toJalali(date) {\n  const formatted = new Intl.DateTimeFormat(\"fa-IR-u-ca-persian\", {\n    timeZone: TEHRAN_TZ,\n    year: \"numeric\",\n    month: \"2-digit\",\n    day: \"2-digit\",\n  }).format(date);\n\n  return toPersianDigits(formatted);\n}\n\nconst nowParts = getTehranNowParts();\n\nconst todayTehranAsUtcDate = new Date(Date.UTC(\n  nowParts.year,\n  nowParts.month - 1,\n  nowParts.day\n));\n\n// JS day:\n// Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5, Saturday=6\nconst jsDay = todayTehranAsUtcDate.getUTCDay();\n\n// شنبه شروع هفته است\nconst daysSinceSaturday = (jsDay - 6 + 7) % 7;\n\nconst currentWeekStart = addDaysUtc(todayTehranAsUtcDate, -daysSinceSaturday);\nconst nextWeekStart = addDaysUtc(currentWeekStart, 7);\n\nconst isThursdayAfterCutoff =\n  jsDay === 4 &&\n  (\n    nowParts.hour > CUTOFF_HOUR ||\n    (nowParts.hour === CUTOFF_HOUR && nowParts.minute >= CUTOFF_MINUTE)\n  );\n\nconst isFriday = jsDay === 5;\n\nlet targetWeekStart = currentWeekStart;\nlet reportWeekMode = \"current_week\";\n\nif (isThursdayAfterCutoff || isFriday) {\n  targetWeekStart = nextWeekStart;\n  reportWeekMode = \"next_week\";\n}\n\nreturn [\n  {\n    json: {\n      target_week_start: toIsoDate(targetWeekStart),\n      target_week_start_jalali: toJalali(targetWeekStart),\n\n      current_week_start: toIsoDate(currentWeekStart),\n      current_week_start_jalali: toJalali(currentWeekStart),\n\n      next_week_start: toIsoDate(nextWeekStart),\n      next_week_start_jalali: toJalali(nextWeekStart),\n\n      report_week_mode: reportWeekMode,\n      tehran_weekday_js: jsDay,\n      tehran_hour: nowParts.hour,\n      tehran_minute: nowParts.minute,\n    },\n  },\n];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1408,
-        31440
+        2896,
+        23808
       ],
-      "id": "06041399-67f3-4c94-9484-afaf74341719",
+      "id": "4a7a9845-96f5-4df8-868b-ae0374ee73d7",
       "name": "Code in JavaScript5"
     },
     {
@@ -3331,10 +3210,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        24672
+        3568,
+        16016
       ],
-      "id": "14c3b3d7-f120-4cc6-9e31-48af344ff208",
+      "id": "feb49997-d431-4978-9399-73e686eea82d",
       "name": "Build Weekly Days Status"
     },
     {
@@ -3348,15 +3227,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        24768
+        3120,
+        16112
       ],
-      "id": "99cc2ccb-ea8c-4737-af0c-b3466c6b0796",
+      "id": "da0950cc-9631-446c-b57e-8a3987c288bb",
       "name": "Get Week Menu For Employees",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3371,22 +3250,22 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        24576
+        3120,
+        15920
       ],
-      "id": "82fb7c35-d3a9-429a-a5bb-a308fec30ab2",
+      "id": "fd896047-41c6-4d1e-9b72-abed9aa4e47c",
       "name": "Get User Weekly Reservations",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.telegram.org/bot8794100819:AAE3l9iicYfSRPeqW0L11d7nWtvTDXHhA2g/sendMessage",
+        "url": "https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({\n  chat_id: $json.chat_id,\n  text: $json.text,\n  reply_markup: $json.reply_markup\n}) }}",
@@ -3395,10 +3274,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2304,
-        24672
+        3792,
+        16016
       ],
-      "id": "4439263e-93d0-42b5-80d8-64d181aff315",
+      "id": "d67f5982-66cc-4e7f-8b7d-9c2f19f3ee30",
       "name": "Send Weekly Days Keyboard"
     },
     {
@@ -3406,10 +3285,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1856,
-        24672
+        3344,
+        16016
       ],
-      "id": "f097c9a0-b2b8-47c7-99e4-1d831faf8acc",
+      "id": "3decd1db-4d8d-433d-bf45-85efe5ca92dc",
       "name": "Merge"
     },
     {
@@ -3423,16 +3302,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        26304
+        3120,
+        17648
       ],
-      "id": "47c66d2c-7611-4476-bd1e-0a1e77ff0edb",
+      "id": "3950829f-6f7f-4569-969f-5b5c0f90aaf3",
       "name": "Get Selected Day Menu",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3447,16 +3326,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        26304
+        3344,
+        17648
       ],
-      "id": "d74dd19e-f424-42d4-bcfb-538c35d92da1",
+      "id": "8c226993-be76-4ee6-9626-f7e99eef8249",
       "name": "Get Selected Day Reservation",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3467,16 +3346,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        26304
+        3568,
+        17648
       ],
-      "id": "eb776361-fc89-4c36-b7eb-59a1431a54cb",
+      "id": "24f308da-3607-466c-adf0-d0a5950f40a5",
       "name": "Build Selected Day Action Keyboard"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://api.telegram.org/bot8794100819:AAE3l9iicYfSRPeqW0L11d7nWtvTDXHhA2g/sendMessage",
+        "url": "=https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({\n  chat_id:$json.chat_id ,\n  text: $json.text,\n  reply_markup: $json.reply_markup\n}) }}\n",
@@ -3485,10 +3364,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2304,
-        26304
+        3792,
+        17648
       ],
-      "id": "977564ef-6551-43ed-bf16-e4d7b9a1fea1",
+      "id": "4a947fee-2b08-4ad7-8baf-4e1472c9b1c4",
       "name": "Send Deactivate Keyboard1"
     },
     {
@@ -3502,15 +3381,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        27264
+        3120,
+        18608
       ],
-      "id": "4b46120a-bfd7-450f-994b-8fbbc244e01e",
+      "id": "2bf22aec-8710-47fa-9ac7-c6d8029496c0",
       "name": "Upsert Reservation",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3525,16 +3404,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1856,
-        27264
+        3344,
+        18608
       ],
-      "id": "250f7a95-6e93-4afe-a77c-8ac760cade15",
+      "id": "b858d439-75e9-4b89-b10c-d6aa1b90d160",
       "name": "Send a text message9",
       "webhookId": "e440755f-dab5-4e87-bbe6-898b655e2d0a",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -3549,15 +3428,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        32016
+        3120,
+        24384
       ],
-      "id": "894a14af-9ce6-40b9-bd5f-67b1fb1c18af",
+      "id": "f8c973d5-b536-456b-b990-475c827a9516",
       "name": "Delete Reservation",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3572,23 +3451,23 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1856,
-        32016
+        3344,
+        24384
       ],
-      "id": "08ad3634-f928-4d34-b81e-0f9cca5504bd",
+      "id": "36248cec-385f-4ec1-92ea-f4a3034057aa",
       "name": "Send a text message10",
       "webhookId": "fdb9fc45-c962-4534-a160-c2c4656cf5a1",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
         "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
-        "text": "={{ '📥 کانفیگ شما:\\n' + $json.config }}",
+        "text": "={{ '📥 کانفیگ شما:\\n' + $json.config_data }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -3596,16 +3475,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1856,
-        31632
+        3344,
+        24000
       ],
-      "id": "ab81bc48-de47-49cb-845e-66fcb964bb1f",
+      "id": "e6e76142-7b18-4505-8203-59f4954fa704",
       "name": "Delete Reservation text",
       "webhookId": "fdb9fc45-c962-4534-a160-c2c4656cf5a1",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -3616,10 +3495,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1184,
-        33184
+        2672,
+        25744
       ],
-      "id": "74b6c321-3886-4a92-aeec-01455bf8b5f1",
+      "id": "a7e583b2-c645-4e2e-afe3-6d1a64020169",
       "name": "Get Next Week Start"
     },
     {
@@ -3629,10 +3508,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        512,
-        33408
+        2000,
+        26352
       ],
-      "id": "b53fdbb3-9788-4141-858a-e38f80124935",
+      "id": "b132dac7-c9dc-4104-8300-f2d9790b7fdc",
       "name": "Get Next Week Start1"
     },
     {
@@ -3642,10 +3521,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1408,
-        24672
+        2432,
+        16448
       ],
-      "id": "a59adff1-55aa-4fe9-ad0a-949581594cdf",
+      "id": "9920a82b-0e75-4aa1-8673-8fb41f72be0c",
       "name": "Get Target Week Start"
     },
     {
@@ -3655,10 +3534,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1408,
-        26304
+        2896,
+        17648
       ],
-      "id": "facf26ab-bc39-4973-8f10-bef1bd07b80e",
+      "id": "50277194-a17a-46af-9eba-57128e274f3a",
       "name": "Get Target Week Start1"
     },
     {
@@ -3668,10 +3547,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1408,
-        27264
+        2896,
+        18608
       ],
-      "id": "13c4fc4e-81ee-40f0-92ce-be4eaccc5f0e",
+      "id": "4e5647d1-37aa-4f6e-97c3-9d9b544f082e",
       "name": "Get Target Week Start2"
     },
     {
@@ -3681,10 +3560,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1408,
-        32016
+        2896,
+        24384
       ],
-      "id": "d300ba61-5cf7-416b-8936-1bbee614ac29",
+      "id": "47e53e8d-c37e-41b9-8feb-8c7a63fdbd8c",
       "name": "Get Target Week Start3"
     },
     {
@@ -3696,31 +3575,18 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        26496
+        2896,
+        17840
       ],
-      "id": "fa1a6e2d-8ddb-4a75-bf90-6370bb39e971",
+      "id": "1ac68e22-b5ac-4a80-ad1c-67a266e71891",
       "name": "Send a text message3",
       "webhookId": "8be5eff8-4d80-4ce8-b494-96e0b5766b43",
       "credentials": {
         "telegramApi": {
-          "id": "DaYrTQJRgSaIIOdZ",
-          "name": "Unnamed credential"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
-    },
-    {
-      "parameters": {
-        "jsCode": "const now = new Date();\nconst tehranNow = new Date(\n  now.toLocaleString('en-US', { timeZone: 'Asia/Tehran' })\n);\n\n// JS day:\n// 0=Sunday, 1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday, 6=Saturday\nconst dayMap = {\n  0: 1, // Sunday -> یکشنبه\n  1: 2, // Monday -> دوشنبه\n  2: 3, // Tuesday -> سه شنبه\n  3: 4, // Wednesday -> چهارشنبه\n  4: 5, // Thursday -> پنج شنبه\n  5: 6, // Friday -> جمعه\n  6: 0  // Saturday -> شنبه\n};\n\nconst currentFaDayIndex = dayMap[tehranNow.getDay()];\n\nconst startOfCurrentWeek = new Date(tehranNow);\nstartOfCurrentWeek.setDate(tehranNow.getDate() - currentFaDayIndex);\nstartOfCurrentWeek.setHours(0, 0, 0, 0);\n\nconst targetWeekStart = new Date(startOfCurrentWeek);\n\nlet bookingMode = 'current_week';\nlet bookingLabel = 'هفته جاری';\nlet introText = '🍽 رزرو غذای هفته جاری\\n\\nلطفاً روز موردنظر را انتخاب کنید:';\n\n// از پنجشنبه و جمعه به بعد رزرو برای هفته بعد\nif (currentFaDayIndex >= 5) {\n  targetWeekStart.setDate(targetWeekStart.getDate() + 7);\n  bookingMode = 'next_week';\n  bookingLabel = 'هفته بعد';\n  introText = '🍽 رزرو غذای هفته بعد\\n\\nاز آنجا که امروز پنجشنبه/جمعه است، رزروها برای هفته بعد ثبت می‌شوند.\\nلطفاً روز موردنظر را انتخاب کنید:';\n}\n\nconst fmt = (d) => {\n  const y = d.getFullYear();\n  const m = String(d.getMonth() + 1).padStart(2, '0');\n  const day = String(d.getDate()).padStart(2, '0');\n  return `${y}-${m}-${day}`;\n};\n\nreturn [\n  {\n    json: {\n      booking_mode: bookingMode,\n      booking_label: bookingLabel,\n      target_week_start: fmt(targetWeekStart),\n      intro_text: introText,\n      current_fa_day_index: currentFaDayIndex\n    }\n  }\n];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        512,
-        23264
-      ],
-      "id": "e2b5b80b-1713-43f4-95a8-0b7659d2135e",
-      "name": "Get Booking Context"
     },
     {
       "parameters": {
@@ -3731,16 +3597,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        27072
+        3120,
+        18416
       ],
-      "id": "f8666e97-1e48-49b5-97fb-c89b237e6053",
+      "id": "c9803928-b4e8-48a5-84d4-a6f25d68b6ff",
       "name": "Get Active Work Statuses",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3751,16 +3617,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1856,
-        27072
+        3344,
+        18416
       ],
-      "id": "0b3959a8-21fb-40f0-b418-66c50c4d8c11",
+      "id": "22c18d3c-942c-4d6b-8cde-3e865c52df71",
       "name": "Build Work Status Keyboard"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.telegram.org/bot8794100819:AAE3l9iicYfSRPeqW0L11d7nWtvTDXHhA2g/sendMessage",
+        "url": "https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({\n  chat_id: $json.chat_id,\n  text: $json.text,\n  reply_markup: $json.reply_markup\n}) }}",
@@ -3769,10 +3635,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2080,
-        27072
+        3568,
+        18416
       ],
-      "id": "9ed1edc6-19eb-4dda-b027-8d4a200927b0",
+      "id": "84d8bd3f-092d-4312-bf2f-7ace873b81b7",
       "name": "Send Work Status Keyboard"
     },
     {
@@ -3786,15 +3652,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        26880
+        2896,
+        18224
       ],
-      "id": "57a59a20-15d5-4fee-8590-c5ff13799de4",
+      "id": "e6e1a625-266c-451e-be63-6614715a3f8d",
       "name": "Upsert My Current Status",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3809,15 +3675,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        26880
+        3120,
+        18224
       ],
-      "id": "b249b4e2-413c-4a15-b9a2-7883d1a02eaa",
+      "id": "9845e0e5-a8cb-476a-bbe7-3a83bdec8bb7",
       "name": "Insert Status History",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3832,15 +3698,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        26880
+        3344,
+        18224
       ],
-      "id": "13794f8f-98bd-4471-8f3e-38906d916572",
+      "id": "0e71516d-87d3-40ef-9b57-ec9afa32d3fd",
       "name": "Get Selected Status Title",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3855,16 +3721,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        26880
+        3568,
+        18224
       ],
-      "id": "9dcbf6e4-a1f4-4d90-b293-12dde6685f0b",
+      "id": "a4185945-5258-4a6d-a9d4-5da318a7c703",
       "name": "Send Status Confirm",
       "webhookId": "a8d8a65a-889e-4b64-ad91-a7b24a1b85aa",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -3915,6 +3781,18 @@
               "row": {
                 "buttons": [
                   {
+                    "text": "🔎 جستجوی کارمند",
+                    "additionalFields": {
+                      "callback_data": "status_employee_search_start|root"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
                     "text": "🔙 بازگشت",
                     "additionalFields": {
                       "callback_data": "={{ $json.auth_user?.access_level === 'admin' ? 'back_admin_menu|1' : 'back_user_menu|1' }}"
@@ -3932,16 +3810,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        27648
+        2896,
+        18992
       ],
-      "id": "225de0b5-6575-4f9a-b42a-230c0f444ab1",
+      "id": "17d1f2ac-37a0-43fd-a6fc-c7a4b74cf326",
       "name": "Send Admin Status Root Menu",
       "webhookId": "ea023c6b-3115-425d-881f-ed441673c245",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -3954,15 +3832,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        30512
+        3344,
+        22784
       ],
-      "id": "1642262a-077a-4891-ac9b-0b1d4eaa069f",
+      "id": "a21242f7-9ab8-478f-b1c7-e9b2910b920a",
       "name": "Get Statuses For Admin Filter",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -3973,16 +3851,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        30512
+        3568,
+        22784
       ],
-      "id": "920eb2e5-f598-4bed-88c1-49646e0dd842",
+      "id": "cf653ea0-aa63-4264-b0a1-056b36605ca5",
       "name": "Build Admin Status Filter Keyboard"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.telegram.org/bot8794100819:AAE3l9iicYfSRPeqW0L11d7nWtvTDXHhA2g/sendMessage",
+        "url": "https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({\n  chat_id: $json.chat_id,\n  text: $json.text,\n  reply_markup: $json.reply_markup\n}) }}",
@@ -3991,10 +3869,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2304,
-        28256
+        3792,
+        20016
       ],
-      "id": "d76d9c76-8ca1-41c3-a99d-0bc6e260f460",
+      "id": "41a8f272-e10f-4aa6-9f5e-0baeea6abd19",
       "name": "Send Admin Status Filter Keyboard"
     },
     {
@@ -4002,10 +3880,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1856,
-        27696
+        3344,
+        18800
       ],
-      "id": "78b463a3-1663-4bf0-8bcc-d0e4c2815ae4",
+      "id": "46bcb706-c01d-4726-a306-c408e4c23925",
       "name": "Merge Status Users + Count"
     },
     {
@@ -4015,10 +3893,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        27696
+        3568,
+        18800
       ],
-      "id": "efdf49ab-4645-40f9-b75d-791c2ab915b4",
+      "id": "4d63e6fc-5af4-4342-b239-376206efc6a9",
       "name": "Build Status Users Page"
     },
     {
@@ -4028,10 +3906,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        28608
+        3568,
+        20912
       ],
-      "id": "3b4f1923-f416-42b8-8761-ed141c970019",
+      "id": "79fcc74b-5ed1-46bd-b0a4-71345d4227d1",
       "name": "Build Department Keyboard"
     },
     {
@@ -4045,16 +3923,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        29664
+        3120,
+        22016
       ],
-      "id": "f17140fa-2751-4b55-b793-3b6486446704",
+      "id": "802b47c2-5f83-456e-a560-fe78f9f4048b",
       "name": "Get Department Users Paged",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4069,15 +3947,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        29952
+        3344,
+        22016
       ],
-      "id": "01d8e80a-7a49-46b9-ac81-90ff18dafb64",
+      "id": "f8942886-739c-43b0-a012-66ef13bfe670",
       "name": "Count Department Users",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4088,10 +3966,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        29952
+        3568,
+        22016
       ],
-      "id": "33f2ea94-4e33-4a30-91d3-54e62da4e1fa",
+      "id": "707d81c6-2fe8-4a59-b67b-3b2fdcda8cf9",
       "name": "Build Department Users Page"
     },
     {
@@ -4105,15 +3983,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        30960
+        3120,
+        23424
       ],
-      "id": "8dc8edc3-4b15-40f9-8ce6-3d31a4838af6",
+      "id": "a4633fe0-2bf2-40e4-bd4f-7e7a15376740",
       "name": "Count Users By Status",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4128,15 +4006,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        27456
+        2896,
+        18800
       ],
-      "id": "9396de67-5c7e-416c-afa3-16e176b6f44b",
+      "id": "d5a3e1b1-04ef-4073-8d44-4ef0b31db249",
       "name": "Get Users By Status Paged",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4151,38 +4029,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        28608
+        3344,
+        20912
       ],
-      "id": "9635b0a3-ec64-41ac-b1db-92fccdd27aef",
+      "id": "53cf23f4-b7bd-48d4-b273-2c3010500a5d",
       "name": "Get Departments",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT COUNT(*)::int AS total_count\nFROM users\nWHERE department = $1\n  AND status = 'approved';",
-        "options": {
-          "queryReplacement": "={{ $('Code in JavaScript').item.json.value1 }}"
-        }
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        512,
-        23040
-      ],
-      "id": "2807a53c-6ef8-4965-b036-4210fca2cf31",
-      "name": "Count Department Users1",
-      "credentials": {
-        "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4197,15 +4052,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        28032
+        3344,
+        19136
       ],
-      "id": "327bac65-fa19-429d-b890-3add5dd3aa21",
+      "id": "b94a7060-7155-4941-80d5-468d5ba15375",
       "name": "Count Department Users2",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4216,10 +4071,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        28032
+        3568,
+        19136
       ],
-      "id": "d3a9a667-bb9b-4699-8d66-a4b0972f24ac",
+      "id": "1b9a0058-9cc4-4865-8656-2b55dc1d05af",
       "name": "Build Department Users Page1"
     },
     {
@@ -4233,15 +4088,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        30144
+        3344,
+        22496
       ],
-      "id": "ca66ed88-c838-43cf-9f16-08479207b750",
+      "id": "2f27c24e-e8ad-4fe6-965b-0083764492f9",
       "name": "Get Status User Detail",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4252,10 +4107,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        30144
+        3568,
+        22496
       ],
-      "id": "adebe6ac-4ee9-45dc-92f1-b16304f10024",
+      "id": "a6d05e43-beb1-49f3-ac90-3ca86bdcaac9",
       "name": "Build Status User Detail"
     },
     {
@@ -4310,16 +4165,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        30000
+        3968,
+        22112
       ],
-      "id": "b952dd58-7eed-4d46-a11a-991c08dbb3c7",
+      "id": "dec2a392-50f2-47ab-b706-987d50b94acf",
       "name": "Send User Main Menu",
       "webhookId": "f079af8a-a6af-4775-8668-502afe479342",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -4387,16 +4242,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        30816
+        4064,
+        23552
       ],
-      "id": "f59c81bf-2178-4825-8367-0472e0fb75db",
+      "id": "94d0e7fb-7067-48de-8733-928c1bbd1a67",
       "name": "send_admin_menu1",
       "webhookId": "f079af8a-a6af-4775-8668-502afe479342",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -4407,10 +4262,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1408,
-        25536
+        2896,
+        16880
       ],
-      "id": "9cc3d308-83ac-4716-883d-3b17e3a616b3",
+      "id": "ea2fa620-540b-4549-9a89-59618804dec6",
       "name": "Get Next Week Start2"
     },
     {
@@ -4453,16 +4308,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1632,
-        25536
+        3120,
+        16880
       ],
-      "id": "5e13f5b6-f5cf-4b74-8ecb-35ddb4509885",
+      "id": "e32618d0-ee8f-4e38-83ea-bc5b8927a6a9",
       "name": "Send Admin Week Selector",
       "webhookId": "dc84c4d4-d206-4801-9562-7ebc1ca86d65",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -4473,10 +4328,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1632,
-        27984
+        3120,
+        19664
       ],
-      "id": "de005348-a985-49f8-93d2-fd9e61015db7",
+      "id": "c56eb8ca-d581-49da-b5ce-e0e1c41e7ee6",
       "name": "Resolve Admin Menu Week"
     },
     {
@@ -4486,10 +4341,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1408,
-        27984
+        2896,
+        19664
       ],
-      "id": "2d00eb55-f663-4871-921d-cf05a41799a9",
+      "id": "31de7cd1-bb83-4f2f-b158-8542f660275c",
       "name": "Get Next Week Start3"
     },
     {
@@ -4503,15 +4358,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        31008
+        3344,
+        23296
       ],
-      "id": "6fb8c13f-d790-4cfa-9944-ddbfd5bf67fb",
+      "id": "22a2d5cf-1364-4139-b390-4b3513d25562",
       "name": "Close Active Menu Actions",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4526,15 +4381,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2080,
-        31008
+        3568,
+        23296
       ],
-      "id": "88e546e7-c6f1-4090-8280-67192cb51a98",
+      "id": "1d38d154-e496-4aff-9fcd-872780998385",
       "name": "Create Add Day Menu Action",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4549,16 +4404,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        27072
+        2896,
+        18416
       ],
-      "id": "be903b90-6360-4f2a-a4c3-f41ecba81414",
+      "id": "b1dfac88-ec02-4fa2-b657-1d2ad772e274",
       "name": "Get My Current Status",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4574,7 +4429,7 @@
           "conditions": [
             {
               "id": "0e4346c1-2159-4b88-a2aa-9b240f4a55f5",
-              "leftValue": "={{ !!$json.username && !!$json.config }}",
+              "leftValue": "={{ !!$json.username && !!$json.config_data }}",
               "rightValue": "",
               "operator": {
                 "type": "boolean",
@@ -4590,10 +4445,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1632,
-        31728
+        3120,
+        24080
       ],
-      "id": "7caab300-ee57-4725-8a99-d79aac475097",
+      "id": "befe3e4d-538d-4e84-868b-4c87118ef936",
       "name": "check config is availeble"
     },
     {
@@ -4607,16 +4462,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1856,
-        31824
+        3344,
+        24192
       ],
-      "id": "6d0fa73e-78d0-4254-a5c5-c8f1d877ed35",
+      "id": "8a23f1fa-e082-474b-b137-d882ca1acaee",
       "name": "Delete Reservation text1",
       "webhookId": "fdb9fc45-c962-4534-a160-c2c4656cf5a1",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -4631,15 +4486,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        29120
+        2896,
+        21664
       ],
-      "id": "2ad1eaf5-4c32-4b8b-bf1a-e1861094f2d2",
+      "id": "0c3b4a19-94b2-4d24-86a2-7fdb7ef8af78",
       "name": "Count Approved Employees",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4654,29 +4509,29 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        29312
+        2896,
+        21856
       ],
-      "id": "609a69b2-cb5c-494f-9c7e-e66be03d0b50",
+      "id": "85e81cb1-d72b-4630-973c-273b8ff8283a",
       "name": "Get Employees Paged",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "const rows = $('Get Employees Paged').all().map(i => i.json);\nconst total = Number($('Count Approved Employees').first().json.total_count || 0);\n\nconst offset = Number($('Code in JavaScript').item.json.value1 || 0);\nconst nextOffset = offset + 5;\n\nlet text = '👤 کارمند موردنظر را انتخاب کنید:';\n\nconst keyboard = [\n  [\n    {\n      text: '🔎 جستجوی کارمند',\n      callback_data: 'status_employee_search_start|0',\n    },\n  ],\n];\n\nif (!rows.length) {\n  text = 'هیچ کاربری یافت نشد.';\n} else {\n  rows.forEach((u) => {\n    const fullName = `${u.first_name || ''} ${u.last_name || ''}`.trim() || '—';\n    const username = u.username ? `@${u.username}` : '';\n    const department = u.department ? ` - ${u.department}` : '';\n    const label = username\n      ? `${fullName} - ${username}${department}`\n      : `${fullName}${department}`;\n\n    keyboard.push([\n      {\n        text: label,\n        callback_data: `status_user_detail|${u.telegram_user_id}|employee|${offset}`,\n      },\n    ]);\n  });\n}\n\nif (nextOffset < total) {\n  keyboard.push([\n    {\n      text: 'بیشتر ⬇️',\n      callback_data: `status_view_by_employee_more|${nextOffset}`,\n    },\n  ]);\n}\n\nkeyboard.push([\n  {\n    text: '🔙 بازگشت',\n    callback_data: 'admin_status_menu|root',\n  },\n]);\n\nreturn [\n  {\n    json: {\n      chat_id: $('Telegram Trigger').item.json.callback_query.message.chat.id,\n      text,\n      reply_markup: {\n        inline_keyboard: keyboard,\n      },\n    },\n  },\n];"
+        "jsCode": "const rows = $('Get Employees Paged').all().map(i => i.json);\nconst total = Number($('Count Approved Employees').first().json.total_count || 0);\n\nconst offset = Number($('Code in JavaScript').item.json.value1 || 0);\nconst nextOffset = offset + 5;\n\nlet text = '👤 کارمند موردنظر را انتخاب کنید:';\n\nconst keyboard = [\n \n];\n\nif (!rows.length) {\n  text = 'هیچ کاربری یافت نشد.';\n} else {\n  rows.forEach((u) => {\n    const fullName = `${u.first_name || ''} ${u.last_name || ''}`.trim() || '—';\n    const username = u.username ? `@${u.username}` : '';\n    const department = u.department ? ` - ${u.department}` : '';\n    const label = username\n      ? `${fullName} - ${username}${department}`\n      : `${fullName}${department}`;\n\n    keyboard.push([\n      {\n        text: label,\n        callback_data: `status_user_detail|${u.telegram_user_id}|employee|${offset}`,\n      },\n    ]);\n  });\n}\n\nif (nextOffset < total) {\n  keyboard.push([\n    {\n      text: 'بیشتر ⬇️',\n      callback_data: `status_view_by_employee_more|${nextOffset}`,\n    },\n  ]);\n}\n\nkeyboard.push([\n  {\n    text: '🔙 بازگشت',\n    callback_data: 'admin_status_menu|root',\n  },\n]);\n\nreturn [\n  {\n    json: {\n      chat_id: $('Telegram Trigger').item.json.callback_query.message.chat.id,\n      text,\n      reply_markup: {\n        inline_keyboard: keyboard,\n      },\n    },\n  },\n];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1856,
-        29424
+        3344,
+        21760
       ],
-      "id": "e10f8634-6cdc-4067-8618-b07ce630d813",
+      "id": "2820ab08-9417-43f1-9a09-ae58fcb8bad5",
       "name": "Build Employee Keyboard"
     },
     {
@@ -4684,10 +4539,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1632,
-        29216
+        3120,
+        21760
       ],
-      "id": "dbad2848-dea8-4f21-bc5a-9e1071122015",
+      "id": "95842d72-a259-47b1-ae71-229317e67fd4",
       "name": "Merge1"
     },
     {
@@ -4697,10 +4552,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1632,
-        28176
+        3120,
+        20128
       ],
-      "id": "1decc117-9a13-4c6f-baf1-7e93e6ab1717",
+      "id": "42d91711-b80b-4246-b226-41004f327c4c",
       "name": "Get Target Week Start Portion"
     },
     {
@@ -4710,10 +4565,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        28416
+        3568,
+        20128
       ],
-      "id": "7a4e68fe-dba5-47a2-a862-80498e071fd6",
+      "id": "a1b7468c-2636-44c2-b99e-2842159dbb45",
       "name": "Build Portion Keyboard"
     },
     {
@@ -4727,15 +4582,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        28416
+        3344,
+        20128
       ],
-      "id": "57f6783c-d4e7-4d14-9553-1b44ded19cea",
+      "id": "c553b89e-752f-4c34-9b50-b81d1e916124",
       "name": "Get Selected Food For Portion",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4750,15 +4605,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        27792
+        3120,
+        19136
       ],
-      "id": "d67b6cca-1086-41d3-b877-942d8b879530",
+      "id": "dc732d19-0995-4d08-b995-ab396d9bb202",
       "name": "Get Department Users Paged More",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4773,15 +4628,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        27456
+        3120,
+        18800
       ],
-      "id": "bddc747f-b25f-4a74-9508-97eb14a10723",
+      "id": "3aca4ece-b788-4dfa-9329-958502f7f01c",
       "name": "Count Users By Status1",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4796,15 +4651,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        28848
+        2896,
+        21392
       ],
-      "id": "f0cf6464-e9ee-4cc0-92d2-6259d0b61ead",
+      "id": "7b72de3a-65ae-4ec2-aeb8-f74b586a3637",
       "name": "Get Publish Week Menu",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4819,16 +4674,16 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        28848
+        3120,
+        21392
       ],
-      "id": "b8e5d39a-842c-4c4a-9fc5-ab3f131c6305",
+      "id": "cac54cae-1f40-4975-97a1-d082d65888dc",
       "name": "Check Week Menu Already Published",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4861,10 +4716,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1856,
-        29088
+        3344,
+        21392
       ],
-      "id": "f9df4eac-5175-4ec8-badb-0d221ed53041",
+      "id": "d0a1b2d2-48e2-4628-9194-5c6d9a7a3868",
       "name": "If7"
     },
     {
@@ -4878,16 +4733,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        29280
+        3568,
+        21488
       ],
-      "id": "36e26218-2945-4dd9-bf73-ede619eb9b79",
+      "id": "06a50f1f-7054-4329-b01d-34cb51c45927",
       "name": "Send a text message4",
       "webhookId": "24554315-e850-45c7-b264-f9cf675816f5",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -4900,15 +4755,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2080,
-        29088
+        3568,
+        21296
       ],
-      "id": "c7c8b81b-d0d9-4e9e-b6cf-1aa73831fbe0",
+      "id": "45ed8e62-f4a1-451d-8246-f91fd2955322",
       "name": "Get Approved Users For Week Menu Publish",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4919,16 +4774,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2304,
-        29088
+        3792,
+        21456
       ],
-      "id": "9bd74b0e-79fc-4b59-ab7c-76834877f11e",
+      "id": "9bf2a6e3-b7ec-42de-a686-f16eff170b04",
       "name": "Build Week Menu Publish Messages"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.telegram.org/bot8794100819:AAE3l9iicYfSRPeqW0L11d7nWtvTDXHhA2g/sendMessage",
+        "url": "https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({\n  chat_id: $json.chat_id,\n  text: $json.text,\n  reply_markup: $json.reply_markup\n}) }}",
@@ -4937,10 +4792,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2528,
-        29088
+        4016,
+        21456
       ],
-      "id": "a98c9b80-fc84-4a82-906a-a7e3e96b326d",
+      "id": "fb2d7ec3-543d-4f98-ad79-423358ae8cda",
       "name": "Send Week Menu Publish Message"
     },
     {
@@ -4954,15 +4809,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2752,
-        29088
+        4240,
+        21456
       ],
-      "id": "095f84d1-65ab-4bec-a0e2-1b816c62654d",
+      "id": "2c7d46cb-eeb5-4a53-9b1a-0a79439b23e7",
       "name": "Mark Week Menu Published",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4977,15 +4832,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        29760
+        3344,
+        22304
       ],
-      "id": "620515ed-bd46-4a33-a507-517b320e4d96",
+      "id": "74f88161-6ead-451b-ba37-d46337c8ea7d",
       "name": "Get Child Work Statuses",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -4996,10 +4851,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        29760
+        3568,
+        22304
       ],
-      "id": "0303cb85-6b42-4dce-a55f-bd8d064549ed",
+      "id": "9c7c22f5-c3c3-44e0-80c7-86fc189f6168",
       "name": "Build Child Work Status Keyboard"
     },
     {
@@ -5013,15 +4868,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1856,
-        28800
+        3344,
+        21104
       ],
-      "id": "e915e056-5d1f-4663-ba47-78edfa9d5806",
+      "id": "506fc080-9852-42af-af15-4899f3e8acbc",
       "name": "Get Admin Child Statuses",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -5032,10 +4887,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
-        28800
+        3568,
+        21104
       ],
-      "id": "df297f0f-97ac-47d1-aff6-43c07451965d",
+      "id": "7abded3d-4c33-4a39-a5a4-9859db9c1d8f",
       "name": "Build Admin Child Status Keyboard"
     },
     {
@@ -5066,10 +4921,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1856,
-        33184
+        3792,
+        25824
       ],
-      "id": "ae8e89cf-94f0-4acf-9430-f9ff813860fd",
+      "id": "5de1333d-7cb0-46b8-aeb7-ecb213efa2ca",
       "name": "If8"
     },
     {
@@ -5083,16 +4938,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        33184
+        4016,
+        25920
       ],
-      "id": "24a55a4c-498f-4274-b15e-026957b94bee",
+      "id": "419333c4-7247-4b78-865d-1e699a55c36e",
       "name": "wrong food format",
       "webhookId": "f079af8a-a6af-4775-8668-502afe479342",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -5105,15 +4960,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1408,
-        23904
+        2896,
+        15248
       ],
-      "id": "46456c9f-00d1-40ef-8cca-d128f0586714",
+      "id": "c8a6d8e1-37e3-465e-af42-5f83c8272bac",
       "name": "Get Active Teams",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -5124,16 +4979,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1632,
-        23904
+        3120,
+        15248
       ],
-      "id": "462bee8e-9de3-4b0d-b9e5-56e1f727cfe6",
+      "id": "47c1e164-13fe-4ab3-b4bd-4825464c4c44",
       "name": "Build Team Buttons"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.telegram.org/bot8794100819:AAE3l9iicYfSRPeqW0L11d7nWtvTDXHhA2g/sendMessage",
+        "url": "https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({\n  chat_id: $json.chat_id,\n  text: $json.text,\n  reply_markup: $json.reply_markup\n}) }}",
@@ -5142,10 +4997,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1856,
-        23904
+        3344,
+        15248
       ],
-      "id": "4b0a5cf5-ca98-4677-b7c1-b6d719318b11",
+      "id": "10036e26-a516-43ea-b044-76e012c0a8eb",
       "name": "Send Dynamic Team Buttons"
     },
     {
@@ -5159,15 +5014,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1632,
-        24096
+        3120,
+        15440
       ],
-      "id": "4b05131e-3a37-4978-be1b-76a0d9d8bf2c",
+      "id": "dba7f6cc-cc0c-4b86-bb9d-9c393675dc2c",
       "name": "Get Selected Team Title",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -5182,15 +5037,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        352,
-        27984
+        2896,
+        19472
       ],
-      "id": "c5ccbba9-2d70-4f8e-b636-61598ba4281c",
+      "id": "6585cb18-03cd-42fb-9125-25e498bb33d9",
       "name": "Close Previous Employee Search Action",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -5205,15 +5060,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        448,
-        28240
+        3120,
+        19472
       ],
-      "id": "11816ef1-9f92-4a34-8027-97c7ff79fbbf",
+      "id": "0c2a4207-fc4d-4e08-ad18-83bdbed7055a",
       "name": "Create Employee Search Action",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
@@ -5245,16 +5100,16 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        656,
-        28240
+        3344,
+        19472
       ],
-      "id": "398418d6-cda9-4e2e-b1cb-0370fc5f0f28",
+      "id": "108aaa91-2f07-4710-9240-62e958db71b6",
       "name": "Send Employee Search Prompt",
       "webhookId": "ce38a663-d65b-4db8-8d2e-bcfbfba1fbf4",
       "credentials": {
         "telegramApi": {
-          "id": "DaYrTQJRgSaIIOdZ",
-          "name": "Unnamed credential"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
@@ -5343,24 +5198,11 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1456,
-        33392
+        3344,
+        25616
       ],
-      "id": "5cb51807-57f3-4666-b74a-aa8c8ee33ef1",
+      "id": "624e0ef7-a36d-4abc-b7f7-d361cbad267e",
       "name": "Route Active Text Action"
-    },
-    {
-      "parameters": {
-        "jsCode": "const text = $('Telegram Trigger').item.json.message?.text || '';\nconst search = text.trim().replace(/^@/, '');\n\nreturn [\n  {\n    json: {\n      search,\n      chat_id: $('Telegram Trigger').item.json.message.chat.id,\n      telegram_user_id: String($('Telegram Trigger').item.json.message.from.id),\n    },\n  },\n];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2000,
-        33360
-      ],
-      "id": "f6158591-9938-4acf-ae1a-74c3508c86b2",
-      "name": "Normalize Employee Search Tex"
     },
     {
       "parameters": {
@@ -5390,10 +5232,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2208,
-        33360
+        3792,
+        25440
       ],
-      "id": "6d010812-10f0-4104-8418-770896b69107",
+      "id": "b63e8685-4c93-4513-867a-28fff10d1063",
       "name": "Is Valid Employee Search"
     },
     {
@@ -5407,23 +5249,23 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2560,
-        33472
+        4016,
+        25536
       ],
-      "id": "49e55268-f373-4c97-9e17-1abba85011ad",
+      "id": "e35884fe-23dc-41ef-8969-e6ea24c4be5d",
       "name": "wrong food format1",
       "webhookId": "f079af8a-a6af-4775-8668-502afe479342",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT\n  u.telegram_user_id,\n  u.first_name,\n  u.last_name,\n  u.username,\n  u.department,\n\n  ws.title AS status_title,\n  ws.emoji AS status_emoji,\n\n  parent.title AS parent_status_title,\n  parent.emoji AS parent_status_emoji,\n\n  cs.updated_at\nFROM users u\nLEFT JOIN user_current_status cs\n  ON cs.telegram_user_id::bigint = u.telegram_user_id::bigint\nLEFT JOIN work_statuses ws\n  ON ws.code = cs.status_code\nLEFT JOIN work_statuses parent\n  ON parent.id = ws.parent_id\nWHERE u.status = 'approved'\n  AND u.telegram_user_id::text <> $2\n  AND (\n    COALESCE(u.first_name, '') ILIKE '%' || $1 || '%'\n    OR COALESCE(u.last_name, '') ILIKE '%' || $1 || '%'\n    OR COALESCE(u.username, '') ILIKE '%' || $1 || '%'\n    OR COALESCE(u.department, '') ILIKE '%' || $1 || '%'\n    OR u.telegram_user_id::text ILIKE '%' || $1 || '%'\n  )\nORDER BY u.first_name, u.last_name, u.id\nLIMIT 10;",
+        "query": "WITH q AS (\n  SELECT\n    TRIM(\n      REPLACE(\n        REPLACE(\n          REPLACE($1, '@', ''),\n          'تیم ',\n          ''\n        ),\n        'واحد ',\n        ''\n      )\n    ) AS search_text\n)\nSELECT\n  u.telegram_user_id,\n  u.first_name,\n  u.last_name,\n  u.username,\n  u.department,\n\n  dt.title AS department_title,\n\n  ws.title AS status_title,\n  ws.emoji AS status_emoji,\n\n  parent.title AS parent_status_title,\n  parent.emoji AS parent_status_emoji,\n\n  cs.updated_at\nFROM users u\nCROSS JOIN q\nLEFT JOIN department_teams dt\n  ON dt.code = u.department\nLEFT JOIN user_current_status cs\n  ON cs.telegram_user_id::bigint = u.telegram_user_id::bigint\nLEFT JOIN work_statuses ws\n  ON ws.code = cs.status_code\nLEFT JOIN work_statuses parent\n  ON parent.id = ws.parent_id\nWHERE u.status = 'approved'\n  AND u.telegram_user_id::text <> $2\n  AND (\n    COALESCE(u.first_name, '') ILIKE '%' || q.search_text || '%'\n    OR COALESCE(u.last_name, '') ILIKE '%' || q.search_text || '%'\n    OR COALESCE(u.username, '') ILIKE '%' || q.search_text || '%'\n    OR u.telegram_user_id::text ILIKE '%' || q.search_text || '%'\n\n    OR COALESCE(u.department, '') ILIKE '%' || q.search_text || '%'\n    OR COALESCE(dt.code, '') ILIKE '%' || q.search_text || '%'\n    OR COALESCE(dt.title, '') ILIKE '%' || q.search_text || '%'\n  )\nORDER BY u.first_name, u.last_name, u.id\nLIMIT 10;",
         "options": {
           "queryReplacement": "={{ $('Normalize Employee Search Text').item.json.search }},{{ $('Normalize Employee Search Text').item.json.telegram_user_id }}"
         }
@@ -5431,30 +5273,30 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2416,
-        33264
+        4016,
+        25152
       ],
-      "id": "e3d5ae81-4f54-4615-8371-2edf51111a93",
+      "id": "b0be8087-353e-4b22-a1d8-e887b87461dd",
       "name": "Search Employees By Text",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "const rows = items.map(i => i.json).filter(u => u.telegram_user_id);\nconst search = $('Normalize Employee Search Text').item.json.search;\nconst chatId = $('Normalize Employee Search Text').item.json.chat_id;\n\nconst keyboard = [];\n\nlet text = `🔎 نتیجه جستجو برای: ${search}\\n\\n`;\n\nif (!rows.length) {\n  text += 'هیچ همکاری با این مشخصات پیدا نشد.';\n} else {\n  rows.forEach((u, index) => {\n    const fullName = `${u.first_name || ''} ${u.last_name || ''}`.trim() || 'بدون نام';\n    const username = u.username ? `@${u.username}` : 'بدون یوزرنیم';\n    const department = u.department || '—';\n\n    const parentStatus = u.parent_status_title\n      ? `${u.parent_status_emoji || ''} ${u.parent_status_title}`.trim()\n      : '';\n\n    const childStatus = u.status_title\n      ? `${u.status_emoji || ''} ${u.status_title}`.trim()\n      : 'ثبت نشده';\n\n    const fullStatus = parentStatus\n      ? `${parentStatus} - ${childStatus}`\n      : childStatus;\n\n    text += `${index + 1}) 👤 ${fullName}\\n`;\n    text += `🔹 ${username}\\n`;\n    text += `🏢 ${department}\\n`;\n    text += `📌 ${fullStatus}\\n\\n`;\n\n    keyboard.push([\n      {\n        text: `👤 ${fullName}`,\n        callback_data: `status_user_detail|${u.telegram_user_id}|search|0`,\n      },\n    ]);\n  });\n}\n\nkeyboard.push([\n  {\n    text: '🔎 جستجوی جدید',\n    callback_data: 'status_employee_search_start|0',\n  },\n]);\n\nkeyboard.push([\n  {\n    text: '🔙 بازگشت به لیست کارمندان',\n    callback_data: 'status_root_by_employee|0',\n  },\n]);\n\nkeyboard.push([\n  {\n    text: '🏠 منوی وضعیت',\n    callback_data: 'admin_status_menu|root',\n  },\n]);\n\nreturn [\n  {\n    json: {\n      chat_id: chatId,\n      text: text.trim(),\n      reply_markup: {\n        inline_keyboard: keyboard,\n      },\n    },\n  },\n];"
+        "jsCode": "const rows = items.map(i => i.json).filter(u => u.telegram_user_id);\nconst search = $('Normalize Employee Search Text').item.json.search;\nconst chatId = $('Normalize Employee Search Text').item.json.chat_id;\n\nconst keyboard = [];\n\nlet text = `🔎 نتیجه جستجو برای: ${search}\\n\\n`;\n\nif (!rows.length) {\n  text += 'هیچ همکاری با این مشخصات پیدا نشد.';\n} else {\n  rows.forEach((u, index) => {\n    const fullName = `${u.first_name || ''} ${u.last_name || ''}`.trim() || 'بدون نام';\n    const username = u.username ? `@${u.username}` : 'بدون یوزرنیم';\n    const department = u.department || '—';\n\n    const parentStatus = u.parent_status_title\n      ? `${u.parent_status_emoji || ''} ${u.parent_status_title}`.trim()\n      : '';\n\n    const childStatus = u.status_title\n      ? `${u.status_emoji || ''} ${u.status_title}`.trim()\n      : 'ثبت نشده';\n\n    const fullStatus = parentStatus\n      ? `${parentStatus} - ${childStatus}`\n      : childStatus;\n\n    text += `${index + 1}) 👤 ${fullName}\\n`;\n    text += `🔹 ${username}\\n`;\n    text += `🏢 ${department}\\n`;\n    text += `📌 ${fullStatus}\\n\\n`;\n\n\n  });\n}\n\nkeyboard.push([\n  {\n    text: '🔎 جستجوی جدید',\n    callback_data: 'status_employee_search_start|0',\n  },\n]);\n\nkeyboard.push([\n  {\n    text: '🔙 بازگشت به لیست کارمندان',\n    callback_data: 'status_root_by_employee|0',\n  },\n]);\n\nkeyboard.push([\n  {\n    text: '🏠 منوی وضعیت',\n    callback_data: 'admin_status_menu|root',\n  },\n]);\n\nreturn [\n  {\n    json: {\n      chat_id: chatId,\n      text: text.trim(),\n      reply_markup: {\n        inline_keyboard: keyboard,\n      },\n    },\n  },\n];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2624,
-        33264
+        4240,
+        25152
       ],
-      "id": "f0b76ae5-7b41-4c73-90e4-2b28e149374c",
+      "id": "17b580c3-04d7-4b35-962b-d9e2e1f2ba84",
       "name": "Build Employee Search Results"
     },
     {
@@ -5468,26 +5310,77 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2832,
-        33264
+        4688,
+        25152
       ],
-      "id": "ea5e34e1-bc83-4c49-954b-6a21d3bb9121",
+      "id": "851cac3a-baab-4dbc-9292-eaf207d2f2e6",
       "name": "Execute a SQL query1",
       "credentials": {
         "postgres": {
-          "id": "mZk2cN80CEeTsCuy",
-          "name": "department"
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
         }
       }
     },
     {
       "parameters": {
-        "chatId": "={{ $json.chat_id }}",
-        "text": "={{ $json.text }}",
-        "replyMarkup": "={{ $json.reply_markup }}",
-        "forceReply": {},
-        "replyKeyboardOptions": {},
-        "replyKeyboardRemove": {},
+        "jsCode": "const text = $('Telegram Trigger').item.json.message?.text || '';\nconst search = text.trim().replace(/^@/, '');\n\nreturn [\n  {\n    json: {\n      search,\n      chat_id: $('Telegram Trigger').item.json.message.chat.id,\n      telegram_user_id: String($('Telegram Trigger').item.json.message.from.id),\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3568,
+        25440
+      ],
+      "id": "4cd15829-f4b8-496b-936b-a1eeaa3256b4",
+      "name": "Normalize Employee Search Text"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  chat_id: $json.chat_id,\n  text: String($json.text || 'نتیجه‌ای برای نمایش وجود ندارد.'),\n  reply_markup: $json.reply_markup,\n  parse_mode: 'HTML'\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        4464,
+        25152
+      ],
+      "id": "768a7cc8-0728-49f7-9359-9cfd518eaee7",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH target_menu AS (\n  SELECT id, week_start_date, day_of_week\n  FROM week_menu\n  WHERE id = $1::bigint\n),\ndeleted_reservations AS (\n  DELETE FROM reservations r\n  USING target_menu tm\n  WHERE r.week_start_date = tm.week_start_date\n    AND r.day_of_week = tm.day_of_week\n  RETURNING r.*\n),\ndeleted_menu AS (\n  DELETE FROM week_menu wm\n  USING target_menu tm\n  WHERE wm.id = tm.id\n  RETURNING wm.*\n)\nSELECT\n  tm.week_start_date,\n  tm.day_of_week,\n  (SELECT COUNT(*) FROM deleted_menu)::int AS deleted_menu_count,\n  (SELECT COUNT(*) FROM deleted_reservations)::int AS deleted_reservations_count\nFROM target_menu tm;",
+        "options": {
+          "queryReplacement": "={{ $json.value1 }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2896,
+        20384
+      ],
+      "id": "260b3ece-bc58-4d25-8c53-e741c7014bde",
+      "name": "Execute a SQL query5",
+      "credentials": {
+        "postgres": {
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
+        "text": "=✅ منوی روز {{$json.day_of_week}} از برنامه غذایی هفته حذف شد.\n\n📅 هفته: {{$json.week_start_jalali}}\n🗑 منوی حذف‌شده: {{$json.deleted_menu_count}}\n🍽 رزروهای حذف‌شده برای این روز: {{$json.deleted_reservations_count}}",
+        "replyMarkup": "inlineKeyboard",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -5495,18 +5388,339 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        3056,
-        33424
+        3344,
+        20384
       ],
-      "id": "a1af750c-0378-4fb4-8f33-0390b9f812e1",
-      "name": "Send Search Results",
-      "webhookId": "f079af8a-a6af-4775-8668-502afe479342",
+      "id": "53fff5c9-ad9f-4bd9-9a3e-5127b1e4e155",
+      "name": "Send Employee Search Prompt1",
+      "webhookId": "ce38a663-d65b-4db8-8d2e-bcfbfba1fbf4",
       "credentials": {
         "telegramApi": {
-          "id": "BtHgeK1462rK8XB5",
-          "name": "department"
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "function toJalaliDate(value) {\n  if (!value) return '—';\n\n  // اگر Postgres تاریخ را به شکل Date/ISO داده باشد، فقط بخش YYYY-MM-DD را نگه می‌داریم\n  const raw = String(value);\n  const datePart = raw.slice(0, 10); // 2026-05-09\n\n  const [year, month, day] = datePart.split('-').map(Number);\n\n  if (!year || !month || !day) {\n    return raw;\n  }\n\n  // ساعت 12 UTC برای جلوگیری از جابه‌جایی روز به خاطر timezone\n  const date = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));\n\n  return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {\n    year: 'numeric',\n    month: '2-digit',\n    day: '2-digit',\n  }).format(date);\n}\n\nreturn items.map((item) => {\n  const row = item.json;\n\n  return {\n    json: {\n      ...row,\n      week_start_jalali: toJalaliDate(row.week_start_date),\n    },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3120,
+        20384
+      ],
+      "id": "fa3fa3c3-ac76-4731-84b2-8c1e4070c384",
+      "name": "Format Deleted Menu Result"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      chat_id: $('Telegram Trigger').item.json.callback_query.message.chat.id,\n      text:\n        '📊 گزارش وضعیت کارمند\\n\\n' +\n        'لطفاً بازه گزارش را انتخاب کنید:',\n      reply_markup: {\n        inline_keyboard: [\n          [\n            {\n              text: 'امروز',\n              callback_data: 'status_employee_report_period|daily|0',\n            },\n          ],\n          [\n            {\n              text: 'این هفته',\n              callback_data: 'status_employee_report_period|weekly|0',\n            },\n          ],\n          [\n            {\n              text: 'این ماه',\n              callback_data: 'status_employee_report_period|monthly|0',\n            },\n          ],\n          [\n            {\n              text: 'روز دلخواه',\n              callback_data: 'status_employee_report_custom|daily',\n            },\n          ],\n          [\n            {\n              text: 'هفته دلخواه',\n              callback_data: 'status_employee_report_custom|weekly',\n            },\n          ],\n          [\n            {\n              text: 'ماه دلخواه',\n              callback_data: 'status_employee_report_custom|monthly',\n            },\n          ],\n          [\n            {\n              text: 'بازگشت',\n              callback_data: 'admin_status_menu|root',\n            },\n          ],\n        ],\n      },\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3568,
+        19328
+      ],
+      "id": "60e4997c-69bb-4947-86e9-0f8f2f1752b9",
+      "name": "Build Report Period Keyboard"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  u.telegram_user_id,\n  u.first_name,\n  u.last_name,\n  u.username,\n  u.department,\n  COALESCE(dt.title, u.department, '—') AS department_title\nFROM users u\nLEFT JOIN department_teams dt\n  ON dt.code = u.department\nWHERE u.status = 'approved'\n  AND u.telegram_user_id::text <> $2\nORDER BY u.first_name, u.last_name, u.id\nLIMIT 20 OFFSET $1;",
+        "options": {
+          "queryReplacement": "={{ Number($('Code in JavaScript').item.json.value2 || 0) }},\n{{ $('Telegram Trigger').item.json.callback_query.from.id }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2896,
+        20192
+      ],
+      "id": "4c4c653e-98c0-422e-9149-41c9b6f4b926",
+      "name": "Get Report Employees Paged",
+      "credentials": {
+        "postgres": {
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*)::int AS total_count\nFROM users\nWHERE status = 'approved'\n  AND telegram_user_id::text <> $1;",
+        "options": {
+          "queryReplacement": "={{ $('Telegram Trigger').item.json.callback_query.from.id }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2896,
+        19856
+      ],
+      "id": "64211a0a-dd71-40f8-9996-b066852bb58b",
+      "name": "Count Report Employees",
+      "credentials": {
+        "postgres": {
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3120,
+        19936
+      ],
+      "id": "cf54b231-bb7c-4fa4-b0ac-b93c08d333db",
+      "name": "Merge Report Employees + Count"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $('Get Report Employees Paged').all().map(i => i.json);\nconst total = Number($('Count Report Employees').first().json.total_count || 0);\n\nconst period = $('Code in JavaScript').item.json.value1;\nconst offset = Number($('Code in JavaScript').item.json.value2 || 0);\nconst nextOffset = offset + 20;\n\nfunction cleanName(u) {\n  const id = String(u.telegram_user_id || '').trim();\n  const first = String(u.first_name || '').trim();\n  let last = String(u.last_name || '').trim();\n\n  if (last === id || /^[0-9]{5,}$/.test(last)) {\n    last = '';\n  }\n\n  return [first, last].filter(Boolean).join(' ') || u.username || 'بدون نام';\n}\n\nfunction cleanUsername(u) {\n  const username = String(u.username || '').trim();\n\n  if (!username) {\n    return 'بدون یوزرنیم';\n  }\n\n  return username.startsWith('@') ? username : `@${username}`;\n}\n\nconst periodLabelMap = {\n  daily: 'امروز',\n  weekly: 'این هفته',\n  monthly: 'این ماه',\n};\n\nconst keyboard = [];\n\n// دکمه سرچ همیشه بالا باشد\nkeyboard.push([\n  {\n    text: '🔎 جستجوی کارمند',\n    callback_data: `status_employee_search|${period}`,\n  },\n]);\n\nif (!rows.length) {\n  keyboard.push([\n    {\n      text: 'بازگشت',\n      callback_data: 'status_employee_report|start',\n    },\n  ]);\n\n  return [\n    {\n      json: {\n        chat_id: $('Telegram Trigger').item.json.callback_query.message.chat.id,\n        text:\n          `📊 گزارش وضعیت کارمند\\n\\n` +\n          `بازه انتخاب‌شده: ${periodLabelMap[period] || period}\\n\\n` +\n          `هیچ کارمند تاییدشده‌ای پیدا نشد.`,\n        reply_markup: {\n          inline_keyboard: keyboard,\n        },\n      },\n    },\n  ];\n}\n\nrows.forEach((u) => {\n  keyboard.push([\n    {\n      text: `${cleanName(u)} | ${cleanUsername(u)}`,\n      callback_data: `status_employee_report_run|${period}|${u.telegram_user_id}`,\n    },\n  ]);\n});\n\nconst navigationRow = [];\n\nif (offset > 0) {\n  navigationRow.push({\n    text: 'قبلی',\n    callback_data: `status_employee_report_period|${period}|${Math.max(offset - 20, 0)}`,\n  });\n}\n\nif (nextOffset < total) {\n  navigationRow.push({\n    text: 'بیشتر',\n    callback_data: `status_employee_report_period|${period}|${nextOffset}`,\n  });\n}\n\nif (navigationRow.length) {\n  keyboard.push(navigationRow);\n}\n\nkeyboard.push([\n  {\n    text: 'بازگشت',\n    callback_data: 'status_employee_report|start',\n  },\n]);\n\nreturn [\n  {\n    json: {\n      chat_id: $('Telegram Trigger').item.json.callback_query.message.chat.id,\n      text:\n        `📊 گزارش وضعیت کارمند\\n\\n` +\n        `بازه انتخاب‌شده: ${periodLabelMap[period] || period}\\n` +\n        `نمایش: ${offset + 1} تا ${Math.min(nextOffset, total)} از ${total}\\n\\n` +\n        `کارمند موردنظر را انتخاب کنید یا جستجو بزنید:`,\n      reply_markup: {\n        inline_keyboard: keyboard,\n      },\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3344,
+        19936
+      ],
+      "id": "d56e441d-5796-431f-b7b3-4d2748a33c05",
+      "name": "Build Employee Report Keyboard"
+    },
+    {
+      "parameters": {
+        "jsCode": "const period = $('Code in JavaScript').item.json.value1;\nconst targetUserId = $('Code in JavaScript').item.json.value2;\n\nconst now = new Date();\nconst tehranNow = new Date(\n  now.toLocaleString('en-US', { timeZone: 'Asia/Tehran' })\n);\n\nfunction startOfDay(date) {\n  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);\n}\n\nfunction addDays(date, days) {\n  const next = new Date(date);\n  next.setDate(next.getDate() + days);\n  return next;\n}\n\nfunction startOfWeekSaturday(date) {\n  const d = startOfDay(date);\n\n  // JS: Sunday=0 ... Saturday=6\n  const jsDay = d.getDay();\n\n  // Persian week starts Saturday\n  const daysSinceSaturday = (jsDay + 1) % 7;\n\n  d.setDate(d.getDate() - daysSinceSaturday);\n  return d;\n}\n\nfunction startOfMonth(date) {\n  return new Date(date.getFullYear(), date.getMonth(), 1, 0, 0, 0);\n}\n\nlet start;\nlet end;\nlet label;\n\nif (period === 'daily') {\n  start = startOfDay(tehranNow);\n  end = addDays(start, 1);\n  label = 'امروز';\n} else if (period === 'weekly') {\n  start = startOfWeekSaturday(tehranNow);\n  end = addDays(start, 7);\n  label = 'این هفته';\n} else if (period === 'monthly') {\n  start = startOfMonth(tehranNow);\n  end = new Date(tehranNow.getFullYear(), tehranNow.getMonth() + 1, 1, 0, 0, 0);\n  label = 'این ماه';\n} else {\n  start = startOfDay(tehranNow);\n  end = addDays(start, 1);\n  label = 'امروز';\n}\n\nreturn [\n  {\n    json: {\n      target_user_id: targetUserId,\n      period,\n      period_label: label,\n      start_ts: start.toISOString(),\n      end_ts: end.toISOString(),\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3120,
+        20576
+      ],
+      "id": "11a505e3-6ea6-4a75-9de1-0e163a9e8b48",
+      "name": "Build Report Range"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH params AS (\n    SELECT\n        $1::text AS target_user_id,\n        $2::timestamp AS start_ts,\n        $3::timestamp AS end_ts,\n\n        -- ساعت کاری را اینجا تنظیم کن\n        TIME '09:00' AS work_start_time,\n        TIME '18:00' AS work_end_time\n),\n\nemployee AS (\n    SELECT\n        u.telegram_user_id,\n        u.first_name,\n        u.last_name,\n        u.username,\n        u.department,\n        COALESCE(dt.title, u.department, '—') AS department_title\n    FROM users u\n    LEFT JOIN department_teams dt\n        ON dt.code = u.department\n    CROSS JOIN params p\n    WHERE u.telegram_user_id::text = p.target_user_id\n    LIMIT 1\n),\n\nworkdays AS (\n    SELECT\n        day_date::date AS day_date,\n        (day_date::date + p.work_start_time) AS work_start,\n        (day_date::date + p.work_end_time) AS work_end\n    FROM params p\n    CROSS JOIN generate_series(\n        date_trunc('day', p.start_ts)::date,\n        (date_trunc('day', p.end_ts) - interval '1 day')::date,\n        interval '1 day'\n    ) AS day_date\n    WHERE EXTRACT(DOW FROM day_date::date) <> 5\n    -- PostgreSQL: Friday = 5\n    -- جمعه حساب نمی‌شود\n),\n\nseed AS (\n    SELECT DISTINCT ON (w.day_date)\n        w.day_date,\n        h.telegram_user_id,\n        h.status_code,\n        h.changed_at\n    FROM workdays w\n    JOIN user_status_history h\n        ON h.telegram_user_id::text = (SELECT target_user_id FROM params)\n       AND h.changed_at::date = w.day_date\n       AND h.changed_at < w.work_start\n    ORDER BY w.day_date, h.changed_at DESC\n),\n\nin_work_range AS (\n    SELECT\n        w.day_date,\n        h.telegram_user_id,\n        h.status_code,\n        h.changed_at\n    FROM workdays w\n    JOIN user_status_history h\n        ON h.telegram_user_id::text = (SELECT target_user_id FROM params)\n       AND h.changed_at >= w.work_start\n       AND h.changed_at < w.work_end\n),\n\nevents AS (\n    SELECT * FROM seed\n    UNION ALL\n    SELECT * FROM in_work_range\n),\n\nspans AS (\n    SELECT\n        e.day_date,\n        e.telegram_user_id,\n        e.status_code,\n        GREATEST(e.changed_at, w.work_start) AS span_start,\n        LEAST(\n            COALESCE(\n                LEAD(e.changed_at) OVER (\n                    PARTITION BY e.day_date, e.telegram_user_id\n                    ORDER BY e.changed_at\n                ),\n                w.work_end\n            ),\n            w.work_end\n        ) AS span_end\n    FROM events e\n    JOIN workdays w\n        ON w.day_date = e.day_date\n),\n\ndurations AS (\n    SELECT\n        telegram_user_id,\n        status_code,\n        EXTRACT(EPOCH FROM (span_end - span_start)) / 3600.0 AS hours\n    FROM spans\n    WHERE span_end > span_start\n)\n\nSELECT\n    e.telegram_user_id,\n    e.first_name,\n    e.last_name,\n    e.username,\n    e.department_title,\n\n    d.status_code,\n    COALESCE(ws.title, d.status_code) AS status_title,\n    COALESCE(parent.title, '') AS parent_status_title,\n\n    ROUND(COALESCE(SUM(d.hours), 0)::numeric, 2) AS total_hours\nFROM employee e\nLEFT JOIN durations d\n    ON d.telegram_user_id::text = e.telegram_user_id::text\nLEFT JOIN work_statuses ws\n    ON ws.code = d.status_code\nLEFT JOIN work_statuses parent\n    ON parent.id = ws.parent_id\nGROUP BY\n    e.telegram_user_id,\n    e.first_name,\n    e.last_name,\n    e.username,\n    e.department_title,\n    d.status_code,\n    ws.title,\n    parent.title\nORDER BY\n    parent.title,\n    ws.title,\n    d.status_code;",
+        "options": {
+          "queryReplacement": "={{ $('Build Report Range').item.json.target_user_id }},\n{{ $('Build Report Range').item.json.start_ts }},\n{{ $('Build Report Range').item.json.end_ts }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3344,
+        20576
+      ],
+      "id": "09051613-7a8c-44da-b4b0-821483670799",
+      "name": "Get Employee Status Duration Report",
+      "credentials": {
+        "postgres": {
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $('Get Employee Status Duration Report').all().map(i => i.json);\nconst range = $('Build Report Range').item.json;\n\nfunction cleanName(u) {\n  const id = String(u.telegram_user_id || '').trim();\n  const first = String(u.first_name || '').trim();\n  let last = String(u.last_name || '').trim();\n\n  if (last === id || /^[0-9]{5,}$/.test(last)) {\n    last = '';\n  }\n\n  return [first, last].filter(Boolean).join(' ') || u.username || 'بدون نام';\n}\n\nfunction cleanUsername(u) {\n  const username = String(u.username || '').trim();\n\n  if (!username) {\n    return 'ندارد';\n  }\n\n  return username.startsWith('@') ? username : `@${username}`;\n}\n\nfunction formatHours(value) {\n  const n = Number(value || 0);\n\n  if (!Number.isFinite(n) || n <= 0) {\n    return '0';\n  }\n\n  if (Number.isInteger(n)) {\n    return String(n);\n  }\n\n  return n.toFixed(2).replace(/\\.?0+$/, '');\n}\n\nfunction toPersianDigits(value) {\n  return String(value).replace(/\\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]);\n}\n\nfunction faDate(iso) {\n  try {\n    return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {\n      year: 'numeric',\n      month: '2-digit',\n      day: '2-digit',\n    }).format(new Date(iso));\n  } catch {\n    return iso;\n  }\n}\n\nconst base = rows[0] || {};\nconst name = cleanName(base);\nconst username = cleanUsername(base);\nconst department = base.department_title || '—';\n\nlet text = `📊 گزارش وضعیت کارمند\\n\\n`;\ntext += `👤 کارمند: ${name}\\n`;\ntext += `تلگرام: ${username}\\n`;\ntext += `تیم: ${department}\\n`;\ntext += `بازه: ${range.period_label}\\n`;\ntext += `محاسبه: فقط داخل ساعت کاری\\n`;\ntext += `از ${faDate(range.start_ts)} تا ${faDate(range.end_ts)}\\n\\n`;\n\nconst validRows = rows.filter(r => r.status_code && Number(r.total_hours || 0) > 0);\n\nif (!validRows.length) {\n  text += 'برای این بازه گزارشی ثبت نشده است.';\n} else {\n  let total = 0;\n\n  validRows.forEach((r, index) => {\n    const parent = String(r.parent_status_title || '').trim();\n    const child = String(r.status_title || '').trim();\n    const status = parent && child\n      ? `${parent} - ${child}`\n      : child || parent || r.status_code;\n\n    const hours = Number(r.total_hours || 0);\n    total += hours;\n\n    text += `${index + 1}) ${status}: ${formatHours(hours)} ساعت\\n`;\n  });\n\n  text += `\\nمجموع زمان ثبت‌شده: ${formatHours(total)} ساعت`;\n}\n\nreturn [\n  {\n    json: {\n      chat_id: $('Telegram Trigger').item.json.callback_query.message.chat.id,\n      text: toPersianDigits(text),\n      reply_markup: {\n        inline_keyboard: [\n          [\n            {\n              text: 'بازگشت به انتخاب کارمند',\n              callback_data: `status_employee_report_period|${range.period}|0`,\n            },\n          ],\n          [\n            {\n              text: 'منوی وضعیت',\n              callback_data: 'admin_status_menu|root',\n            },\n          ],\n        ],\n      },\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3568,
+        20576
+      ],
+      "id": "7213b656-b172-4909-a2f0-efbee4fa11f5",
+      "name": "Build Employee Status Report Text"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH closed AS (\n  UPDATE user_actions\n  SET status = 'done'\n  WHERE telegram_user_id = $1\n    AND action_type IN (\n      'status_employee_report_search',\n      'status_employee_search'\n    )\n    AND status = 'active'\n  RETURNING id\n)\nINSERT INTO user_actions (\n  telegram_user_id,\n  action_type,\n  action_data,\n  status,\n  created_at,\n  updated_at\n)\nVALUES (\n  $1,\n  'status_employee_report_search',\n  json_build_object(\n    'period', $2\n  ),\n  'active',\n  NOW(),\n  NOW()\n)\nRETURNING *;",
+        "options": {
+          "queryReplacement": "={{ $('Code in JavaScript').item.json.admin_user_id }},\n{{ $('Code in JavaScript').item.json.value1 }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2896,
+        20768
+      ],
+      "id": "44c59a5d-c0d4-4084-94b6-33a3ff893faf",
+      "name": "Save Report Search Action",
+      "credentials": {
+        "postgres": {
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Code in JavaScript').item.json.admin_chat_id }}",
+        "text": "=🔎 جستجوی کارمند برای گزارش وضعیت\n\nلطفاً نام، یوزرنیم یا آیدی کارمند را ارسال کنید.\n\nمثال:\nali\n@alireza_av\n",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "بازگشت به لیست کارمندان",
+                    "additionalFields": {
+                      "callback_data": "={{\"status_employee_report_period|\" + $('Code in JavaScript').item.json.value1 + \"|0\"}}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3120,
+        20768
+      ],
+      "id": "925a8e70-561a-4785-917a-90212fa8f70d",
+      "name": "Send a text message11",
+      "webhookId": "4a684a3e-4bbf-4ab6-8da8-f8ad5e158deb",
+      "credentials": {
+        "telegramApi": {
+          "id": "gkBrgVSnHULZxIku",
+          "name": "rooberab_final"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f62d2faf-4a57-45c6-8444-9d7edc4dcdc1",
+              "leftValue": "={{ $json.action_type === 'status_employee_report_search' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3120,
+        25744
+      ],
+      "id": "a10727ba-e679-4f40-b0b8-e541970fd51a",
+      "name": "Is Report Search Action"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  u.telegram_user_id,\n  u.first_name,\n  u.last_name,\n  u.username,\n  u.department,\n  COALESCE(dt.title, u.department, '—') AS department_title\nFROM users u\nLEFT JOIN department_teams dt\n  ON dt.code = u.department\nWHERE u.status = 'approved'\n  AND u.telegram_user_id::text <> $2\n  AND (\n    u.telegram_user_id::text ILIKE '%' || $1 || '%'\n    OR u.username ILIKE '%' || REPLACE($1, '@', '') || '%'\n    OR u.first_name ILIKE '%' || $1 || '%'\n    OR u.last_name ILIKE '%' || $1 || '%'\n    OR CONCAT_WS(' ', u.first_name, u.last_name) ILIKE '%' || $1 || '%'\n  )\nORDER BY u.first_name, u.last_name, u.id\nLIMIT 20;",
+        "options": {
+          "queryReplacement": "={{ $('Telegram Trigger').item.json.message.text }},\n{{ $('Telegram Trigger').item.json.message.from.id }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3344,
+        26128
+      ],
+      "id": "4a7882f7-cf35-4637-85c0-681b46a928fb",
+      "name": "Search Report Employees",
+      "credentials": {
+        "postgres": {
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE user_actions\nSET status = 'done'\nWHERE id = $1;",
+        "options": {
+          "queryReplacement": "={{ $('Check User Status').first().json.id }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        4016,
+        26128
+      ],
+      "id": "327abef3-e1e6-4e6e-943a-bb110e0900f5",
+      "name": "Done Report Search Action",
+      "credentials": {
+        "postgres": {
+          "id": "5RaxN6wW8Suf0hqz",
+          "name": "task_manager_general"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $('Search Report Employees').all().map(i => i.json);\nconst action = $('Check User Status').first().json;\n\nlet actionData = action.action_data || {};\n\nif (typeof actionData === 'string') {\n  try {\n    actionData = JSON.parse(actionData);\n  } catch {\n    actionData = {};\n  }\n}\n\nconst period = actionData.period || 'weekly';\n\nfunction cleanName(u) {\n  const id = String(u.telegram_user_id || '').trim();\n  const first = String(u.first_name || '').trim();\n  let last = String(u.last_name || '').trim();\n\n  if (last === id || /^[0-9]{5,}$/.test(last)) {\n    last = '';\n  }\n\n  return [first, last].filter(Boolean).join(' ') || u.username || 'بدون نام';\n}\n\nfunction cleanUsername(u) {\n  const username = String(u.username || '').trim();\n\n  if (!username) {\n    return 'بدون یوزرنیم';\n  }\n\n  return username.startsWith('@') ? username : `@${username}`;\n}\n\nconst periodLabelMap = {\n  daily: 'امروز',\n  weekly: 'این هفته',\n  monthly: 'این ماه',\n};\n\nconst keyboard = [];\n\nif (!rows.length) {\n  keyboard.push([\n    {\n      text: '🔎 جستجوی دوباره',\n      callback_data: `status_employee_report_search_start|${period}`,\n    },\n  ]);\n\n  keyboard.push([\n    {\n      text: 'بازگشت به لیست ۲۰تایی',\n      callback_data: `status_employee_report_period|${period}|0`,\n    },\n  ]);\n\n  keyboard.push([\n    {\n      text: 'منوی وضعیت',\n      callback_data: 'admin_status_menu|root',\n    },\n  ]);\n\n  return [\n    {\n      json: {\n        chat_id: $('Telegram Trigger').item.json.message.chat.id,\n        text:\n          `📊 گزارش وضعیت کارمند\\n\\n` +\n          `بازه: ${periodLabelMap[period] || period}\\n\\n` +\n          `کارمندی با این جستجو پیدا نشد.\\n\\n` +\n          `لطفاً با نام، یوزرنیم یا آیدی دقیق‌تر جستجو کنید.`,\n        reply_markup: {\n          inline_keyboard: keyboard,\n        },\n      },\n    },\n  ];\n}\n\nrows.forEach((u) => {\n  keyboard.push([\n    {\n      text: `${cleanName(u)} | ${cleanUsername(u)}`,\n      callback_data: `status_employee_report_run|${period}|${u.telegram_user_id}`,\n    },\n  ]);\n});\n\nkeyboard.push([\n  {\n    text: '🔎 جستجوی دوباره',\n    callback_data: `status_employee_report_search_start|${period}`,\n  },\n]);\n\nkeyboard.push([\n  {\n    text: 'بازگشت به لیست ۲۰تایی',\n    callback_data: `status_employee_report_period|${period}|0`,\n  },\n]);\n\nkeyboard.push([\n  {\n    text: 'منوی وضعیت',\n    callback_data: 'admin_status_menu|root',\n  },\n]);\n\nreturn [\n  {\n    json: {\n      chat_id: $('Telegram Trigger').item.json.message.chat.id,\n      text:\n        `📊 گزارش وضعیت کارمند\\n\\n` +\n        `بازه: ${periodLabelMap[period] || period}\\n` +\n        `نتایج جستجو: ${rows.length} مورد\\n\\n` +\n        `کارمند موردنظر را انتخاب کنید:`,\n      reply_markup: {\n        inline_keyboard: keyboard,\n      },\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3568,
+        26128
+      ],
+      "id": "4e9f861d-f474-4010-bf80-c60b8ab1dfe7",
+      "name": "Done Report Search Action1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot8616803101:AAEL8mcqCzpGByvw5Z1pcoo5JSDddaUs4hs/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  chat_id: $json.chat_id,\n  text: $json.text,\n  reply_markup: $json.reply_markup\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        3792,
+        26128
+      ],
+      "id": "bb245ce0-9091-4641-ad55-5f4e57381677",
+      "name": "Send Admin Status Filter Keyboard1"
     }
   ],
   "connections": {
@@ -5968,6 +6182,46 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Execute a SQL query5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Report Period Keyboard",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Report Employees Paged",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Count Report Employees",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Report Range",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Save Report Search Action",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -6099,7 +6353,7 @@
       "main": [
         [
           {
-            "node": "Route Active Text Action",
+            "node": "Is Report Search Action",
             "type": "main",
             "index": 0
           }
@@ -6122,86 +6376,6 @@
         [
           {
             "node": "If6",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript1": {
-      "main": [
-        [
-          {
-            "node": "Check Tehran Time",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript2": {
-      "main": [
-        [
-          {
-            "node": "send_menu",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "get-foods": {
-      "main": [
-        [
-          {
-            "node": "If4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Check Tehran Time": {
-      "main": [
-        [
-          {
-            "node": "If3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If3": {
-      "main": [
-        [
-          {
-            "node": "end_reserve_time",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "get-foods",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If4": {
-      "main": [
-        [
-          {
-            "node": "Code in JavaScript2",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "no food for tomorrow",
             "type": "main",
             "index": 0
           }
@@ -6539,11 +6713,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "Get Next Week Start1": {
-      "main": [
-        []
       ]
     },
     "Get Target Week Start": {
@@ -7192,7 +7361,7 @@
       "main": [
         [
           {
-            "node": "Normalize Employee Search Tex",
+            "node": "Normalize Employee Search Text",
             "type": "main",
             "index": 0
           }
@@ -7207,17 +7376,6 @@
         [
           {
             "node": "Extract Foods",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Normalize Employee Search Tex": {
-      "main": [
-        [
-          {
-            "node": "Is Valid Employee Search",
             "type": "main",
             "index": 0
           }
@@ -7257,6 +7415,28 @@
       "main": [
         [
           {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Employee Search Text": {
+      "main": [
+        [
+          {
+            "node": "Is Valid Employee Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
             "node": "Execute a SQL query1",
             "type": "main",
             "index": 0
@@ -7264,11 +7444,172 @@
         ]
       ]
     },
-    "Execute a SQL query1": {
+    "Execute a SQL query5": {
       "main": [
         [
           {
-            "node": "Send Search Results",
+            "node": "Format Deleted Menu Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Deleted Menu Result": {
+      "main": [
+        [
+          {
+            "node": "Send Employee Search Prompt1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Report Period Keyboard": {
+      "main": [
+        [
+          {
+            "node": "Send Admin Status Filter Keyboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Report Employees Paged": {
+      "main": [
+        [
+          {
+            "node": "Merge Report Employees + Count",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Count Report Employees": {
+      "main": [
+        [
+          {
+            "node": "Merge Report Employees + Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Report Employees + Count": {
+      "main": [
+        [
+          {
+            "node": "Build Employee Report Keyboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Employee Report Keyboard": {
+      "main": [
+        [
+          {
+            "node": "Send Admin Status Filter Keyboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Report Range": {
+      "main": [
+        [
+          {
+            "node": "Get Employee Status Duration Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Employee Status Duration Report": {
+      "main": [
+        [
+          {
+            "node": "Build Employee Status Report Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Employee Status Report Text": {
+      "main": [
+        [
+          {
+            "node": "Send Admin Status Filter Keyboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Report Search Action": {
+      "main": [
+        [
+          {
+            "node": "Send a text message11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Report Search Action": {
+      "main": [
+        [
+          {
+            "node": "Search Report Employees",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route Active Text Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Report Employees": {
+      "main": [
+        [
+          {
+            "node": "Done Report Search Action1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Done Report Search Action1": {
+      "main": [
+        [
+          {
+            "node": "Send Admin Status Filter Keyboard1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Admin Status Filter Keyboard1": {
+      "main": [
+        [
+          {
+            "node": "Done Report Search Action",
             "type": "main",
             "index": 0
           }
@@ -7279,6 +7620,6 @@
   "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "702b0852bf9e2cf33c03035b2397ae18216b83c4350305891d6106c1c1d84703"
+    "instanceId": "c8717510a2bc79b7ee587bee061381145147159fb04dcd6bf490f860c7e3192d"
   }
 }

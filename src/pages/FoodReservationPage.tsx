@@ -20,6 +20,7 @@ type PortionType = 'full' | 'half' | 'khorak';
 
 type FoodMenuDayWithThirdOption = FoodMenuDay & {
   food3?: string | null;
+  weekStartDate?: string | null;
 };
 
 const portionOptions: {
@@ -58,23 +59,61 @@ function getReservationKey(dayOfWeek: string) {
   return normalizeDay(dayOfWeek);
 }
 
+function cleanFoodTitle(value: unknown) {
+  if (value === null || value === undefined) return null;
+
+  const text = String(value).trim();
+
+  if (!text) return null;
+
+  const lowered = text.toLowerCase();
+
+  if (lowered === 'null') return null;
+  if (lowered === 'undefined') return null;
+  if (text === '—') return null;
+
+  return text;
+}
+
 function getFoodOptions(day: FoodMenuDayWithThirdOption): {
   slot: FoodSlot;
   title: string;
 }[] {
   return [
-    { slot: 'f1' as const, title: day.food1 },
-    { slot: 'f2' as const, title: day.food2 },
-    { slot: 'f3' as const, title: day.food3 },
-  ]
-    .filter(
-      (item): item is { slot: FoodSlot; title: string } =>
-        typeof item.title === 'string' && item.title.trim().length > 0,
-    )
-    .map((item) => ({
-      slot: item.slot,
-      title: item.title.trim(),
-    }));
+    { slot: 'f1' as const, title: cleanFoodTitle(day.food1) },
+    { slot: 'f2' as const, title: cleanFoodTitle(day.food2) },
+    { slot: 'f3' as const, title: cleanFoodTitle(day.food3) },
+  ].filter(
+    (item): item is { slot: FoodSlot; title: string } =>
+      Boolean(item.title),
+  );
+}
+
+function parseLocalDate(dateText?: string | null) {
+  if (!dateText) return null;
+
+  const [year, month, day] = String(dateText).split('-').map(Number);
+
+  if (!year || !month || !day) return null;
+
+  return new Date(year, month - 1, day, 12, 0, 0);
+}
+
+function formatJalaliFullDate(date?: Date | null) {
+  if (!date) return '—';
+
+  return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(date);
+}
+
+function getWeekStartDateText(days: FoodMenuDayWithThirdOption[]) {
+  const firstDayWithWeekStart = days.find((day) => day.weekStartDate);
+  const parsedDate = parseLocalDate(firstDayWithWeekStart?.weekStartDate);
+
+  return formatJalaliFullDate(parsedDate);
 }
 
 export default function FoodReservationPage() {
@@ -120,6 +159,10 @@ export default function FoodReservationPage() {
       return (aIndex === -1 ? 99 : aIndex) - (bIndex === -1 ? 99 : bIndex);
     });
   }, [menu]);
+
+  const weekStartDateText = useMemo(() => {
+    return getWeekStartDateText(sortedMenu);
+  }, [sortedMenu]);
 
   const reservationMap = useMemo(() => {
     const map = new Map<string, FoodReservation>();
@@ -217,6 +260,8 @@ export default function FoodReservationPage() {
         <EmptyBlock onRetry={loadData} />
       ) : (
         <>
+          <WeekStartBox weekStartDateText={weekStartDateText} />
+
           <section className="mb-4 rounded-[34px] bg-[#eeeeea] p-5">
             <div className="mb-4 flex items-center justify-between">
               <div>
@@ -275,6 +320,25 @@ export default function FoodReservationPage() {
         </>
       )}
     </MiniAppLayout>
+  );
+}
+
+function WeekStartBox({ weekStartDateText }: { weekStartDateText: string }) {
+  return (
+    <section className="mb-3 flex items-center justify-between rounded-[22px] bg-white px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+      <div>
+        <div className="text-[11px] font-black text-[#9a9a92]">
+          هفته رزرو
+        </div>
+        <div className="mt-1 text-sm font-black text-[#151515]">
+          شروع هفته: {weekStartDateText}
+        </div>
+      </div>
+
+      <div className="rounded-full bg-[#eef3ff] px-3 py-1 text-[11px] font-black text-[#4777ff]">
+        شمسی
+      </div>
+    </section>
   );
 }
 
